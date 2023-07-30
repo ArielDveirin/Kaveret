@@ -15,15 +15,17 @@ const Login=()=> {
                     <Grid>
                     <h2>Sign In</h2>
                     </Grid>
-                    <TextField label='Username' placeholder='Enter Username' fullWidth required/>
+                    <TextField label='Username'   color="warning"
+placeholder='Enter Username' fullWidth required/>
                     <br/>
                     <br/>
-                    <TextField label='Password' placeholder='Enter Password' type='password' fullWidth required/>
+                    <TextField label='Email'   color="warning"
+placeholder='Enter Email'  fullWidth required/>
                     <br/>
                     <br/>
 
                     <Button style={btnStyle} type='submit' variant='contained' color='primary' fullWidth>Sign In</Button>
-                    
+                    <br/>
                     <br/>
                     <Link
                         to="/register">
