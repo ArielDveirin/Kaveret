@@ -24,11 +24,11 @@ const Register=()=> {
         setIsLoading(true);
     
         try {
-          const response = await fetch('http://localhost:3333/', {
-            method: 'Post',
+          const response = await fetch('http://localhost:8080/post', {
+            method: 'POST',
             body: JSON.stringify({
-                'Username': username,
-                'Password': password,
+                Username: username,
+                Password: password,
                 'Email': email,
              }),
           });

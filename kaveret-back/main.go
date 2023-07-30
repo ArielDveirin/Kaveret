@@ -1,39 +1,34 @@
 package main
 
 import (
-	"errors"
 	"fmt"
-	"io"
 	"io/ioutil"
-	"net/http"
-	"os"
+
+	"github.com/gin-gonic/gin"
 )
 
-func getRoot(w http.ResponseWriter, r *http.Request) {
-
-	body, err := ioutil.ReadAll(r.Body)
+func postRegisterDetails(c *gin.Context) {
+	jsonData, err := ioutil.ReadAll(c.Request.Body)
 	if err != nil {
-		fmt.Printf("could not read body: %s\n", err)
+		// Handle error
 	}
 
-	fmt.Printf("got / request. body:\n%s\n", body)
+	c.JSON(200, gin.H{
+		string(jsonData): "Hello!",
+	})
 
-}
-func getHello(w http.ResponseWriter, r *http.Request) {
-	fmt.Printf("got /hello request\n")
-	io.WriteString(w, "Hello, HTTP!\n")
+	fmt.Println("got username: ", string(jsonData))
+
 }
 
 func main() {
-	http.HandleFunc("/", getRoot)
-	http.HandleFunc("/hello", getHello)
+	r := gin.Default()
+	r.POST("", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "pong",
+		})
 
-	err := http.ListenAndServe(":3333", nil)
-
-	if errors.Is(err, http.ErrServerClosed) {
-		fmt.Printf("server closed\n")
-	} else if err != nil {
-		fmt.Printf("error starting server: %s\n", err)
-		os.Exit(1)
-	}
+	})
+	r.POST("/post", postRegisterDetails)
+	r.Run() // listen and serve on 0.0.0.0:8080
 }
