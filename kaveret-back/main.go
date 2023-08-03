@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"io/ioutil"
 
+	"kaveretBack/initializers"
+	"kaveretBack/models"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,16 +17,19 @@ type RegisterUser struct {
 	Email    string
 }
 
+func init() {
+	initializers.LoadEnvVariables()
+	initializers.ConnectToDB()
+}
+
 func postRegisterDetails(c *gin.Context) {
+
 	jsonData, err := ioutil.ReadAll(c.Request.Body)
 	if err != nil {
-		// Handle error
+		fmt.Println(err)
 	}
 
-	c.JSON(200, gin.H{
-		string(jsonData): "Hello!",
-	})
-	var user RegisterUser
+	var user models.User
 
 	parseErr := json.Unmarshal(jsonData, &user)
 
@@ -35,6 +41,10 @@ func postRegisterDetails(c *gin.Context) {
 	}
 
 	fmt.Printf("Username: %s\nPassword: %s\nEmail: %s\n", user.Username, user.Password, user.Email)
+
+	c.JSON(200, gin.H{
+		string(jsonData): "Hello!",
+	})
 
 }
 
