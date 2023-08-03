@@ -7,6 +7,6 @@ type User struct {
 	Username   string
 	Password   string
 	Email      string
-	Id         int
+	Id         string
 	Permission string
 }

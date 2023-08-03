@@ -24,7 +24,7 @@ const Register=()=> {
         setIsLoading(true);
     
         try {
-          const response = await fetch('http://localhost:3002/post', {
+          const response = await fetch('http://localhost:3002/register', {
             method: 'POST',
             body: JSON.stringify({
                 Username: username,

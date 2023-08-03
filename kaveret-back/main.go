@@ -1,12 +1,8 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
-	"io/ioutil"
-
+	"kaveretBack/controllers"
 	"kaveretBack/initializers"
-	"kaveretBack/models"
 
 	"github.com/gin-gonic/gin"
 )
@@ -24,26 +20,10 @@ func init() {
 
 func postRegisterDetails(c *gin.Context) {
 
-	jsonData, err := ioutil.ReadAll(c.Request.Body)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	var user models.User
-
-	parseErr := json.Unmarshal(jsonData, &user)
-
-	if parseErr != nil {
-
-		// if error is not nil
-		// print error
-		fmt.Println(parseErr)
-	}
-
-	fmt.Printf("Username: %s\nPassword: %s\nEmail: %s\n", user.Username, user.Password, user.Email)
+	controllers.UserCreate(c)
 
 	c.JSON(200, gin.H{
-		string(jsonData): "Hello!",
+		"jsonData": "Hello!",
 	})
 
 }
@@ -56,6 +36,6 @@ func main() {
 		})
 
 	})
-	r.POST("/post", postRegisterDetails)
+	r.POST("/register", postRegisterDetails)
 	r.Run() // listen and serve on 0.0.0.0:8080
 }
