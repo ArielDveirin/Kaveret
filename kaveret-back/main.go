@@ -28,6 +28,14 @@ func postRegisterDetails(c *gin.Context) {
 
 }
 
+func postLoginDetails(c *gin.Context) {
+	controllers.CheckUser(c)
+
+	c.JSON(200, gin.H{
+		"jsonData": "Hello!",
+	})
+}
+
 func main() {
 	r := gin.Default()
 	r.POST("", func(c *gin.Context) {
@@ -37,5 +45,7 @@ func main() {
 
 	})
 	r.POST("/register", postRegisterDetails)
+	r.POST("/login", postLoginDetails)
+
 	r.Run() // listen and serve on 0.0.0.0:8080
 }

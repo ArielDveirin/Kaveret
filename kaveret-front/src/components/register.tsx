@@ -2,6 +2,7 @@ import { Grid, Paper, Avatar, TextField, Button} from '@mui/material'
 import {Link} from "react-router-dom"
 import React, { Component } from 'react'
 import {useState} from 'react';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 
 const Register=()=> {
@@ -20,6 +21,7 @@ const Register=()=> {
     const [isLoading, setIsLoading] = useState(false);
     const [err, setErr] = useState('');
 
+   
     const handleClick = async () => {
         setIsLoading(true);
     
@@ -54,6 +56,8 @@ const Register=()=> {
 
 
     return (
+      
+
             <Grid>
                 <Paper elevation={10} style={paperStyle}>
                     <Grid>
@@ -82,6 +86,8 @@ const Register=()=> {
                 </Paper>
             </Grid>
         )
+        
+
 }
 
 export default  Register
