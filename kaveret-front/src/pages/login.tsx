@@ -1,50 +1,45 @@
 import { Grid, Paper, Avatar, TextField, Button} from '@mui/material'
 import {Link} from "react-router-dom"
+import { useNavigate } from 'react-router-dom';
 
 import React, { useState } from 'react'
 
 
+const Login=(props: { setName: (name: string) => void })=> {
+    const navigate = useNavigate();
 
-const Login=()=> {
     const paperStyle={padding : 20, height:'70vh', width:300, margin:"20px auto"}
     const avatarStyle={backgroundColor:'green'}
     const btnStyle={backgroundColor:'#fbcb05'}
 
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
-    const [passwordError, setPasswordError] = useState(false)
-    const [usernameError, setUsernameError] = useState(false)
+    const [direct, setRedirect] = useState(false);
 
-    const [data, setData] = useState({data: []})
-    const [isLoading, setIsLoading] = useState(false);
-    const [err, setErr] = useState('');
-
+    //const response = await fetch('http://localhost:3002/login', {
+  
     const handleClick = async () => {
-        setIsLoading(true);
     
-        try {
-          const response = await fetch('http://localhost:3002/login', {
+        const response = await fetch('http://localhost:3002/login', {
             method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            credentials: 'include',
             body: JSON.stringify({
                 Username: username,
                 Password: password,
              }),
-          });
-    
-          if (!response.ok) {
-            throw new Error(`Error! status: ${response.status}`);
-          } 
-        } 
-        
-        catch(error)
-        {
-            setErr('Error');
-        }
-        finally {
-          setIsLoading(false);
-        }
-        
+        });
+          
+        const content = await response.json();
+
+        setRedirect(true);
+        props.setName(content.name);
     }
+    if (direct) {
+            navigate('/');
+    }
+        
+    
 
 
     return (

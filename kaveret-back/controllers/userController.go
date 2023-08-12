@@ -73,25 +73,35 @@ func Signup(c *gin.Context) {
 }
 
 func Login(c *gin.Context) {
-	var body struct {
-		Email    string
-		Password string
+	jsonData, err := ioutil.ReadAll(c.Request.Body)
+	if err != nil {
+		log.Fatal(err)
 	}
-	c.Bind(&body)
+
+	var body models.User
+
+	parseErr := json.Unmarshal(jsonData, &body)
+
+	if parseErr != nil {
+
+		// if error is not nil
+		// print error
+		log.Fatal(parseErr)
+	}
 
 	var user models.User
-	initializers.DB.First(&user, "email = ?", body.Email)
+	initializers.DB.First(&user, "username = ?", body.Username)
 
 	if user.ID == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "Email or Password incorrect",
+			"message": "Username or Password incorrect",
 		})
 		return
 	}
 
 	//check if both the password matches or not
 
-	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(body.Password))
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(body.Password))
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{

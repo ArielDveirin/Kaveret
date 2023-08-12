@@ -37,7 +37,7 @@ func main() {
 	})
 	r.POST("/register", postRegisterDetails)
 	r.POST("/login", postLoginDetails)
-	r.GET("/validate", middleware.RequireAuth, controllers.Validate)
+	r.GET("/", middleware.RequireAuth, controllers.Validate)
 
 	r.Run() // listen and serve on 0.0.0.0:8080
 }
