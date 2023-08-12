@@ -2,27 +2,30 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"kaveretBack/initializers"
 	"kaveretBack/models"
 	"log"
+	"net/http"
+	"os"
 
+	"time"
+
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-
-	"github.com/google/uuid"
+	"golang.org/x/crypto/bcrypt"
 )
 
-func UserCreate(c *gin.Context) {
+func Signup(c *gin.Context) {
 
 	jsonData, err := ioutil.ReadAll(c.Request.Body)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	var user models.User
+	var body models.User
 
-	parseErr := json.Unmarshal(jsonData, &user)
+	parseErr := json.Unmarshal(jsonData, &body)
 
 	if parseErr != nil {
 
@@ -31,80 +34,94 @@ func UserCreate(c *gin.Context) {
 		log.Fatal(parseErr)
 	}
 
-	u := uuid.New()
+	var user models.User
+	initializers.DB.First(&user, "email = ?", body.Email)
 
-	fmt.Printf("Username: %s\nPassword: %s\nEmail: %s\nUid: %s\n", user.Username, user.Password, user.Email, u.String())
-
-	if err != nil {
-		log.Fatal(err)
-	}
-	finalUserData := models.User{Username: user.Username, Email: user.Email, Password: user.Password, Id: u.String(), Permission: "User"}
-
-	result := initializers.DB.Create(&finalUserData) // pass pointer of data to Create
-
-	if result.Error != nil {
-		c.Status(400)
+	if user.ID != 0 {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "this email aready exists",
+		})
 		return
 	}
 
-	r := gin.Default()
-	r.POST("", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "User Created",
-		})
+	//hash the password
 
+	hash, err := bcrypt.GenerateFromPassword([]byte(body.Password), 10)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "problem hashing password",
+		})
+		return
+	}
+
+	// create user record
+
+	newuser := models.User{Username: body.Username, Email: body.Email, Password: string(hash), Permission: "client"}
+
+	result := initializers.DB.Create(&newuser)
+	if result.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "uSER COULD NOT BE CREATED",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "USER CREATED",
 	})
-	r.Run() // listen and serve on 0.0.0.0:8080
 }
 
-func CheckUser(c *gin.Context) {
-
-	jsonData, err := ioutil.ReadAll(c.Request.Body)
-	if err != nil {
-		log.Fatal(err)
+func Login(c *gin.Context) {
+	var body struct {
+		Email    string
+		Password string
 	}
+	c.Bind(&body)
 
 	var user models.User
-	var returnedUser models.User
+	initializers.DB.First(&user, "email = ?", body.Email)
 
-	parseErr := json.Unmarshal(jsonData, &user)
-
-	if parseErr != nil {
-
-		// if error is not nil
-		// print error
-		log.Fatal(parseErr)
+	if user.ID == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Email or Password incorrect",
+		})
+		return
 	}
 
-	fmt.Printf("Username: %s\nPassword: %s\n", user.Username, user.Password)
+	//check if both the password matches or not
+
+	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(body.Password))
 
 	if err != nil {
-		log.Fatal(err)
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Email or Password incorrect",
+		})
+		return
 	}
 
-	initializers.DB.Where("Username = ?", user.Username).First(&returnedUser)
-	// SELECT * FROM users WHERE username = username given;
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"userid": user.ID,
+		"exp":    time.Now().Add(time.Hour * 24 * 30).Unix(),
+	})
 
-	if returnedUser.Password == user.Password {
-		fmt.Println("User found")
+	// Sign and get the complete encoded token as a string using the secret
+	tokenString, err := token.SignedString([]byte(os.Getenv("SECRET")))
 
-		r := gin.Default()
-		r.POST("", func(c *gin.Context) {
-			c.JSON(200, gin.H{
-				"message": "User Found",
-			})
-
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Token string could not be created",
 		})
-	} else {
-		fmt.Println("User NOT found")
-
-		r := gin.Default()
-		r.POST("", func(c *gin.Context) {
-			c.JSON(404, gin.H{
-				"message": "User Not Found",
-			})
-
-		})
+		return
 	}
+	c.SetSameSite(http.SameSiteLaxMode)
+	c.SetCookie("Auth", tokenString, 3600*24*30, "", "", false, true)
 
+}
+
+func Validate(c *gin.Context) {
+	user, _ := c.Get("user")
+	c.JSON(http.StatusOK, gin.H{
+		"message": user,
+	})
 }

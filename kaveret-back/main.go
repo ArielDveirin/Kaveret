@@ -3,6 +3,7 @@ package main
 import (
 	"kaveretBack/controllers"
 	"kaveretBack/initializers"
+	"kaveretBack/middleware"
 
 	"github.com/gin-gonic/gin"
 )
@@ -19,21 +20,11 @@ func init() {
 }
 
 func postRegisterDetails(c *gin.Context) {
-
-	controllers.UserCreate(c)
-
-	c.JSON(200, gin.H{
-		"jsonData": "Hello!",
-	})
-
+	controllers.Signup(c)
 }
 
 func postLoginDetails(c *gin.Context) {
-	controllers.CheckUser(c)
-
-	c.JSON(200, gin.H{
-		"jsonData": "Hello!",
-	})
+	controllers.Login(c)
 }
 
 func main() {
@@ -46,6 +37,7 @@ func main() {
 	})
 	r.POST("/register", postRegisterDetails)
 	r.POST("/login", postLoginDetails)
+	r.GET("/validate", middleware.RequireAuth, controllers.Validate)
 
 	r.Run() // listen and serve on 0.0.0.0:8080
 }

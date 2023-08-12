@@ -1,4 +1,4 @@
-import { Grid, Paper, Avatar, TextField, Button} from '@mui/material'
+import { Grid, Paper, Avatar, TextField, Button, Dialog, DialogTitle, DialogContentText, DialogActions, DialogContent} from '@mui/material'
 import {Link} from "react-router-dom"
 import React, { Component } from 'react'
 import {useState} from 'react';
@@ -56,7 +56,6 @@ const Register=()=> {
 
 
     return (
-      
 
             <Grid>
                 <Paper elevation={10} style={paperStyle}>
@@ -76,6 +75,7 @@ const Register=()=> {
                     
 
                     <Button style={btnStyle} type='submit' variant='contained' color='primary' fullWidth onClick={handleClick}>Sign UP</Button>
+                    
                     <br/>
                     <br/>
                     <Link

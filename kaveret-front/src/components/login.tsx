@@ -33,14 +33,9 @@ const Login=()=> {
     
           if (!response.ok) {
             throw new Error(`Error! status: ${response.status}`);
-          }
-    
-          const result = await response.json();
-    
-          console.log('result is: ', JSON.stringify(result, null, 4));
-    
-          setData(result);
+          } 
         } 
+        
         catch(error)
         {
             setErr('Error');
@@ -48,6 +43,7 @@ const Login=()=> {
         finally {
           setIsLoading(false);
         }
+        
     }
 
 
