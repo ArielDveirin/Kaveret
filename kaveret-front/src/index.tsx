@@ -3,23 +3,26 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import Login from './components/login';
+import Login from './pages/login';
 
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
 import "./index.css";
-import Register from './components/register';
+import Register from './pages/register';
+import Home from './pages/Home';
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Login></Login>,
+    element: <Home name={''}></Home>,
   },
   {
     path: "/login",
-    element: <Login></Login>,
+    element: <Login setName={function (name: string): void {
+      throw new Error('Function not implemented.');
+    } }></Login>,
   },
   {
     path: "/register",

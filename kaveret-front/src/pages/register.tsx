@@ -1,7 +1,8 @@
-import { Grid, Paper, Avatar, TextField, Button} from '@mui/material'
+import { Grid, Paper, Avatar, TextField, Button, Dialog, DialogTitle, DialogContentText, DialogActions, DialogContent} from '@mui/material'
 import {Link} from "react-router-dom"
 import React, { Component } from 'react'
 import {useState} from 'react';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 
 const Register=()=> {
@@ -20,16 +21,17 @@ const Register=()=> {
     const [isLoading, setIsLoading] = useState(false);
     const [err, setErr] = useState('');
 
+   
     const handleClick = async () => {
         setIsLoading(true);
     
         try {
-          const response = await fetch('http://localhost:8080/post', {
+          const response = await fetch('http://localhost:3002/register', {
             method: 'POST',
             body: JSON.stringify({
                 Username: username,
                 Password: password,
-                'Email': email,
+                Email: email,
              }),
           });
     
@@ -54,6 +56,7 @@ const Register=()=> {
 
 
     return (
+
             <Grid>
                 <Paper elevation={10} style={paperStyle}>
                     <Grid>
@@ -72,6 +75,7 @@ const Register=()=> {
                     
 
                     <Button style={btnStyle} type='submit' variant='contained' color='primary' fullWidth onClick={handleClick}>Sign UP</Button>
+                    
                     <br/>
                     <br/>
                     <Link
@@ -82,6 +86,8 @@ const Register=()=> {
                 </Paper>
             </Grid>
         )
+        
+
 }
 
 export default  Register
