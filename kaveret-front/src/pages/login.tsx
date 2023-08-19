@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react'
 
 
-const Login=(props: { setName: (name: string) => void })=> {
+const Login=()=> {
     const navigate = useNavigate();
 
     const paperStyle={padding : 20, height:'70vh', width:300, margin:"20px auto"}
@@ -33,7 +33,6 @@ const Login=(props: { setName: (name: string) => void })=> {
         const content = await response.json();
 
         setRedirect(true);
-        props.setName(content.name);
     }
     if (direct) {
             navigate('/');
