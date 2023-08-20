@@ -26,6 +26,7 @@ const Login=()=> {
         try {
             const response = await fetch('http://localhost:3002/login', {
               method: 'POST',
+              credentials: 'include',
               body: JSON.stringify({
                   Username: username,
                   Password: password,
@@ -37,13 +38,6 @@ const Login=()=> {
             }
       
             const result = await response.json();
-      
-            console.log('result is: ', JSON.stringify(result, null, 4));
-            
-            const content = await response.json();
-
-
-
             setData(result);
           } 
           catch(error)
@@ -51,8 +45,6 @@ const Login=()=> {
               setErr('Error');
           }
           finally {
-            setIsLoading(false);
-
             setRedirect(true);
           }
           
