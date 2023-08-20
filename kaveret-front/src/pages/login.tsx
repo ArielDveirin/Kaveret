@@ -58,26 +58,26 @@ const Login=()=> {
 
 
     return (
-            <Grid>
+            <Grid dir='rtl'>
                 <Paper elevation={10} style={paperStyle}>
                     <Grid>
-                    <h2>Sign In</h2>
+                    <h2>כניסה למערכת</h2>
                     </Grid>
-                    <TextField label='Username'   color="warning"
-placeholder='Enter Username' fullWidth required onChange={e => setUsername(e.target.value)}/>
+                    <TextField label='שם משתמש'  dir='rtl' color="warning"
+placeholder='הכנס שם משתמש' fullWidth required onChange={e => setUsername(e.target.value)}/>
                     <br/>
                     <br/>
-                    <TextField label='Password'   color="warning"
-placeholder='Enter Password'  fullWidth required onChange={e => setPassword(e.target.value)}/>
+                    <TextField label='סיסמא'  dir='rtl' color="warning"
+placeholder='הכנס סיסמא'  fullWidth required onChange={e => setPassword(e.target.value)}/>
                     <br/>
                     <br/>
 
-                    <Button style={btnStyle} type='submit' variant='contained' color='primary' onClick={handleClick} fullWidth>Sign In</Button>
+                    <Button style={btnStyle} type='submit' variant='contained' color='primary' onClick={handleClick} fullWidth>כניסה</Button>
                     <br/>
                     <br/>
                     <Link
-                        to="/register">
-                    Dont have an account?
+                        to="/הרשמה">
+                    רוצה להרשם?
                     </Link>
                     
                 </Paper>

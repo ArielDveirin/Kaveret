@@ -58,29 +58,29 @@ const Register=()=> {
     return (
 
             <Grid>
-                <Paper elevation={10} style={paperStyle}>
+                <Paper elevation={10} style={paperStyle} dir='rtl'>
                     <Grid>
                     <h2>Register</h2>
                     </Grid>
-                    <TextField label='Username'   color="warning" placeholder='Enter Username' fullWidth required onChange={e => setUsername(e.target.value)}/>
+                    <TextField label='שם משתמש'   color="warning" placeholder='הכנס שם משתמש' fullWidth required onChange={e => setUsername(e.target.value)}/>
                     <br/>
                     <br/>
-                    <TextField label='Email'   color="warning" placeholder='Enter Email'  fullWidth required onChange={e => setEmail(e.target.value)} />
+                    <TextField label='כתובת דוא"ל'   color="warning" placeholder='הכנס כתובת דוא"ל'  fullWidth required onChange={e => setEmail(e.target.value)} />
                     <br/>
                     <br/>
-                    <TextField label='Password'  color="warning" placeholder='Enter Password' type='password' fullWidth required onChange={e => setPassword(e.target.value)} />
+                    <TextField label='סיסמא'  color="warning" placeholder='הכנס סיסמא' type='password' fullWidth required onChange={e => setPassword(e.target.value)} />
                     <br/>
                     <br/>
 
                     
 
-                    <Button style={btnStyle} type='submit' variant='contained' color='primary' fullWidth onClick={handleClick}>Sign UP</Button>
+                    <Button style={btnStyle} type='submit' variant='contained' color='primary' fullWidth onClick={handleClick}>הרשמה</Button>
                     
                     <br/>
                     <br/>
                     <Link
-                        to="/login">
-                    Already have an account?
+                        to="/כניסה">
+                    יש לך כבר חשבון?
                     </Link>
                     
                 </Paper>

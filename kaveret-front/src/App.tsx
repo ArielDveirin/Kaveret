@@ -16,39 +16,45 @@ function App() {
 
 
     useEffect(() => {
-        setName("hi")
-        const data = async () => {
-            const response = await fetch("http://localhost:3002/validate", {
-                headers: {'Content-Type': 'application/json'},
-                'credentials':'include',
-
-            })
-
-            const content = await response.json();
-            console.log(content)
-            const details = content.message
-
-            setName(details)
-
-        }}
-    
-        
+        (
+            async () => {
 
 
-       
-    );
+                const response = await fetch('http://localhost:3002/validate', {
+                    method: "GET",
+                    credentials: 'include',
+                }).then(response => {
+                    if (!response.ok) {
+                      throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                  })
+                  .then(data => {
+                    // Update the state with the received JSON data
+                    setName(data.message.Username);
+                  })
+                  .catch(error => {
+                    console.error('Error fetching data:', error);
+                  });
+                
+            }
+            
+            
+        )();
+    });
+
     return (
         <div className="App">
             <BrowserRouter>
-                <ResponsiveAppBar />
+                <ResponsiveAppBar name={name} setName={setName}/>
                 
                 <Routes>
 
-                    <Route path="/"  element={<Home/>} />
+                    <Route path="/"  element={<Home name={name}/>} />
                     
-                    <Route path="/login" element={<Login/>}/>
+                    <Route path="/כניסה" element={<Login/>}/>
 
-                    <Route path="/register" element={<Register />} />
+                    <Route path="/הרשמה" element={<Register />} />
                 </Routes>
             </BrowserRouter>
         </div>

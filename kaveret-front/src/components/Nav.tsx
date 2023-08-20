@@ -11,13 +11,13 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
 import { Link } from 'react-router-dom';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 
-const pages = ['Discounts', 'Products', 'login'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const pages = ['מבצעים', 'מוצרים', 'כניסה'];
+const settings = ['חשבון', 'יציאה מהמערכת'];
 
-function ResponsiveAppBar() {
+function ResponsiveAppBar(props: { name: string, setName: (name: string) => void }) {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
@@ -37,28 +37,15 @@ function ResponsiveAppBar() {
   };
 
   return (
-    <AppBar position="static">
+    
+    <AppBar position="static" style={{backgroundColor: "white", color:"black"}} dir="rtl">
+
+
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            LOGO
-          </Typography>
-
+        <Link to="/">
+            <img src={require('../images/kaveretLogo.png')} />
+          </Link>
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -90,32 +77,15 @@ function ResponsiveAppBar() {
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">
-                    <Link style={{textDecoration: "none", color:"white"}} to={`/${page}`}>{page}</Link>
+                  <Typography textAlign="right">
+                    <Link style={{textDecoration: "none", color:"black"}} to={`/${page}`}>{page}</Link>
                   </Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            LOGO
-          </Typography>
+          
+          
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
@@ -123,7 +93,7 @@ function ResponsiveAppBar() {
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                <Link style={{textDecoration: "none", color:"white"}} to={`/${page}`}>
+                <Link style={{textDecoration: "none", color:"black", fontSize:'30px'}} to={`/${page}`}>
                   {page}
                 </Link>
               </Button>
@@ -133,7 +103,9 @@ function ResponsiveAppBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="Remy Sharp">
+                  <ManageAccountsIcon style={{color: "black"}}/>  
+                </Avatar>
               </IconButton>
             </Tooltip>
             <Menu
@@ -154,7 +126,7 @@ function ResponsiveAppBar() {
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                  <Typography textAlign="right">{setting}</Typography>
                 </MenuItem>
               ))}
             </Menu>
