@@ -8,35 +8,46 @@ import Register from "./pages/register";
 import Login from './pages/login';
 import SearchAppBar from './components/Nav';
 import ResponsiveAppBar from './components/Nav';
+import { stringify } from 'querystring';
+import { Console } from 'console';
 
 function App() {
     const [name, setName] = useState('');
 
-    
 
-    /*
-    return (
-        <div className="App">
-                <SearchAppBar/>
-                
-                <main className="form-signin">
-                    <Routes>
-                        <Route path="/"  Component={() => <Home name={name}/>}/>
-                        <Route path="/login" Component={() => <Login setName={setName}/>}/>
-                        <Route path="/register" Component={Register}/>
-                    </Routes>
-                </main>
-        </div>
-    );*/
+    useEffect(() => {
+        setName("hi")
+        const data = async () => {
+            const response = await fetch("http://localhost:3002/validate", {
+                headers: {'Content-Type': 'application/json'},
+                'credentials':'include',
+
+            })
+
+            const content = await response.json();
+            console.log(content)
+            const details = content.message
+
+            setName(details)
+
+        }}
+    
+        
+
+
+       
+    );
     return (
         <div className="App">
             <BrowserRouter>
-                <ResponsiveAppBar/>
-
+                <ResponsiveAppBar />
+                
                 <Routes>
 
-                    <Route path="/"  element={<Home name={''} />} />
-                    <Route path="/login" element={<Login />} />
+                    <Route path="/"  element={<Home/>} />
+                    
+                    <Route path="/login" element={<Login/>}/>
+
                     <Route path="/register" element={<Register />} />
                 </Routes>
             </BrowserRouter>

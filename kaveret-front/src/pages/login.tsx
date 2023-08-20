@@ -15,24 +15,48 @@ const Login=()=> {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [direct, setRedirect] = useState(false);
+    const [data, setData] = useState({data: []})
+    const [isLoading, setIsLoading] = useState(false);
+    const [err, setErr] = useState('');
 
     //const response = await fetch('http://localhost:3002/login', {
   
     const handleClick = async () => {
     
-        const response = await fetch('http://localhost:3002/login', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            credentials: 'include',
-            body: JSON.stringify({
-                Username: username,
-                Password: password,
-             }),
-        });
-          
-        const content = await response.json();
+        try {
+            const response = await fetch('http://localhost:3002/login', {
+              method: 'POST',
+              body: JSON.stringify({
+                  Username: username,
+                  Password: password,
+               }),
+            });
+      
+            if (!response.ok) {
+              throw new Error(`Error! status: ${response.status}`);
+            }
+      
+            const result = await response.json();
+      
+            console.log('result is: ', JSON.stringify(result, null, 4));
+            
+            const content = await response.json();
 
-        setRedirect(true);
+
+
+            setData(result);
+          } 
+          catch(error)
+          {
+              setErr('Error');
+          }
+          finally {
+            setIsLoading(false);
+
+            setRedirect(true);
+          }
+          
+        
     }
     if (direct) {
             navigate('/');
