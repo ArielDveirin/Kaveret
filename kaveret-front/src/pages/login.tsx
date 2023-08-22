@@ -17,6 +17,7 @@ const Login=()=> {
     const [direct, setRedirect] = useState(false);
     const [data, setData] = useState({data: []})
     const [isLoading, setIsLoading] = useState(false);
+
     const [err, setErr] = useState('');
 
     //const response = await fetch('http://localhost:3002/login', {

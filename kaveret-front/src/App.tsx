@@ -6,11 +6,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from "./pages/Home";
 import Register from "./pages/register";
 import Login from './pages/login';
-import SearchAppBar from './components/Nav';
+import AdminPanel from './pages/adminPanel'
 import ResponsiveAppBar from './components/Nav';
-import { stringify } from 'querystring';
-import { Console } from 'console';
-import ResponsiveDrawer from './components/RightSideDrawer';
 
 function App() {
     const [name, setName] = useState('');
@@ -37,6 +34,8 @@ function App() {
                   .catch(error => {
                     console.error('Error fetching data:', error);
                   });
+
+                  
                 
             }
             
@@ -58,6 +57,8 @@ function App() {
                     <Route path="/כניסה" element={<Login/>}/>
 
                     <Route path="/הרשמה" element={<Register />} />
+
+                    <Route path="/מנהל" element={<AdminPanel/>}/>
                 </Routes>
             </BrowserRouter>
         </div>
