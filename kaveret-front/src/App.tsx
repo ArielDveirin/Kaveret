@@ -10,6 +10,7 @@ import SearchAppBar from './components/Nav';
 import ResponsiveAppBar from './components/Nav';
 import { stringify } from 'querystring';
 import { Console } from 'console';
+import ResponsiveDrawer from './components/RightSideDrawer';
 
 function App() {
     const [name, setName] = useState('');
@@ -46,7 +47,9 @@ function App() {
     return (
         <div className="App">
             <BrowserRouter>
-                <ResponsiveAppBar name={name} setName={setName}/>
+                <ResponsiveAppBar name={name} setName={function (name: string): void {
+                    throw new Error('Function not implemented.');
+                } }/>
                 
                 <Routes>
 

@@ -7,20 +7,61 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom';
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import SearchIcon from '@mui/icons-material/Search';
+import { styled, alpha } from '@mui/material/styles';
+import InputBase from '@mui/material/InputBase';
 
-const pages = ['מבצעים', 'מוצרים', 'כניסה'];
-const settings = ['חשבון', 'יציאה מהמערכת'];
+const pages = ['מוצרים', 'מבצעים', 'כניסה'];
+
+
+const Search = styled('div')(({ theme }) => ({
+  position: 'relative',
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: 'gainsboro',
+  '&:hover': {
+    backgroundColor: 'lightgrey',
+  },
+  marginRight: theme.spacing(2),
+  marginLeft: 0,
+  width: '100%',
+  [theme.breakpoints.up('sm')]: {
+    marginLeft: theme.spacing(3),
+    width: 'auto',
+  },
+}));
+
+const SearchIconWrapper = styled('div')(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: '100%',
+  position: 'absolute',
+  pointerEvents: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: 'inherit',
+  '& .MuiInputBase-input': {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('md')]: {
+      width: '20ch',
+    },
+  },
+}));
 
 function ResponsiveAppBar(props: { name: string, setName: (name: string) => void }) {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
+  
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -38,14 +79,18 @@ function ResponsiveAppBar(props: { name: string, setName: (name: string) => void
 
   return (
     
-    <AppBar position="static" style={{backgroundColor: "white", color:"black"}} dir="rtl">
+    <AppBar position="static" style={{backgroundColor: "white", color:"black", width: '100%'}} dir="rtl">
 
 
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-        <Link to="/">
+          
+        <Box sx={{mr:-37, marginLeft:0, width:'-100', paddingLeft:'150px'}}>
+          <Link to="/">
             <img src={require('../images/kaveretLogo.png')} />
           </Link>
+        </Box>
+
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -57,6 +102,7 @@ function ResponsiveAppBar(props: { name: string, setName: (name: string) => void
             >
               <MenuIcon />
             </IconButton>
+            
             <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
@@ -83,6 +129,7 @@ function ResponsiveAppBar(props: { name: string, setName: (name: string) => void
                 </MenuItem>
               ))}
             </Menu>
+            
           </Box>
           
           
@@ -91,7 +138,7 @@ function ResponsiveAppBar(props: { name: string, setName: (name: string) => void
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                sx={{ my: 2, color: 'white', display: 'block', paddingLeft:'50px',paddingRight:"50px", alignItems:"center"}}
               >
                 <Link style={{textDecoration: "none", color:"black", fontSize:'30px'}} to={`/${page}`}>
                   {page}
@@ -99,41 +146,25 @@ function ResponsiveAppBar(props: { name: string, setName: (name: string) => void
               </Button>
             ))}
           </Box>
+         
+          <Search dir='ltr'>
+          <SearchIconWrapper dir='ltr'>
+              <SearchIcon />
+            </SearchIconWrapper>
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp">
-                  <ManageAccountsIcon style={{color: "black"}}/>  
-                </Avatar>
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="right">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+            <StyledInputBase dir='rtl'
+              placeholder="חיפוש..."
+              inputProps={{ 'aria-label': 'search' }}
+            />
+            
+          </Search>
+          
+          <Typography >
+          {props.name ? 'היי ' + props.name : 'You are not logged in'}          </Typography>
         </Toolbar>
       </Container>
     </AppBar>
   );
 }
+
 export default ResponsiveAppBar;

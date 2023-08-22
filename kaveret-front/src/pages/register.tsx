@@ -60,7 +60,7 @@ const Register=()=> {
             <Grid>
                 <Paper elevation={10} style={paperStyle} dir='rtl'>
                     <Grid>
-                    <h2>Register</h2>
+                    <h2>הרשמה לאתר כוורת</h2>
                     </Grid>
                     <TextField label='שם משתמש'   color="warning" placeholder='הכנס שם משתמש' fullWidth required onChange={e => setUsername(e.target.value)}/>
                     <br/>
@@ -74,7 +74,7 @@ const Register=()=> {
 
                     
 
-                    <Button style={btnStyle} type='submit' variant='contained' color='primary' fullWidth onClick={handleClick}>הרשמה</Button>
+                    <Button style={btnStyle} type='submit' variant='contained' color='primary' fullWidth onClick={handleClick}>הירשם</Button>
                     
                     <br/>
                     <br/>
