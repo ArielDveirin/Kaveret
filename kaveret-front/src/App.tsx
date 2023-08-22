@@ -45,6 +45,7 @@ function App() {
 
     return (
         <div className="App">
+
             <BrowserRouter>
                 <ResponsiveAppBar name={name} setName={function (name: string): void {
                     throw new Error('Function not implemented.');

@@ -13,8 +13,9 @@ import { Link } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
+import { useEffect, useState } from 'react';
 
-const pages = ['מנהל','מוצרים', 'מבצעים', 'כניסה'];
+const pages = ['מוצרים', 'מבצעים', 'כניסה'];
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -60,8 +61,21 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 function ResponsiveAppBar(props: { name: string, setName: (name: string) => void }) {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [err, setErr] = useState('');
+  let check;
   
+  
+
+  useEffect(() => {
+    checkAdmin()
+    if (!isAdmin && pages.length > 3) {
+      pages.pop()
+    }else if(isAdmin && pages.length < 4) {
+      pages.push('מנהל')
+    }
+  });
+
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -76,6 +90,25 @@ function ResponsiveAppBar(props: { name: string, setName: (name: string) => void
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  async function checkAdmin() {
+    try {
+      const response = await fetch('http://localhost:3002/isAdmin', {
+        method: 'GET',
+        credentials: 'include',
+      });
+  
+      if (response.ok) {
+        setIsAdmin(true)
+      }
+    } 
+    catch(error)
+    {
+        setErr('Error');
+    }
+  }
+  
+
 
   return (
     

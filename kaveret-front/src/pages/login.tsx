@@ -52,6 +52,7 @@ const Login=()=> {
         
     }
     if (direct) {
+            window.location.reload();
             navigate('/');
     }
         
