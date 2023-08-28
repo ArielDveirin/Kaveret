@@ -1,38 +1,72 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
-import {BrowserRouter, Route} from "react-router-dom";
-import Home from './pages/Home';
+
+import Nav from "./components/Nav";
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Home from "./pages/Home";
+import Register from "./pages/register";
 import Login from './pages/login';
-import Register from './pages/register';
+import AdminPanel from './pages/adminPanel'
+import ItemPanel from './pages/ItemPanel'
+
+import ResponsiveAppBar from './components/Nav';
 
 function App() {
     const [name, setName] = useState('');
 
+
     useEffect(() => {
         (
             async () => {
-                const response = await fetch('http://localhost:3000/validate', {
-                    headers: {'Content-Type': 'application/json'},
+
+
+                const response = await fetch('http://localhost:3002/validate', {
+                    method: "GET",
                     credentials: 'include',
-                });
+                }).then(response => {
+                    if (!response.ok) {
+                      throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                  })
+                  .then(data => {
+                    // Update the state with the received JSON data
+                    setName(data.message.Username);
+                  })
+                  .catch(error => {
+                    console.error('Error fetching data:', error);
+                  });
 
-                const content = await response.json();
-
-                setName(content.name);
+                  
+                
             }
+            
+            
         )();
     });
 
-
     return (
         <div className="App">
-            <BrowserRouter>
 
-                <main className="form-signin">
-                    <Route path="/"  Component={() => <Home name={name}/>}/>
-                    <Route path="/login" Component={() => <Login setName={setName}/>}/>
-                    <Route path="/register" Component={Register}/>
-                </main>
+            <BrowserRouter>
+                <ResponsiveAppBar name={name} setName={function (name: string): void {
+                    throw new Error('Function not implemented.');
+                } }/>
+                
+                <Routes>
+
+                    <Route path="/"  element={<Home name={name}/>} />
+                    
+                    <Route path="/כניסה" element={<Login/>}/>
+
+                    <Route path="/הרשמה" element={<Register />} />
+
+                    <Route path="/מנהל" element={<AdminPanel/>}/>
+
+                    <Route path="/ניהול_מוצרים" element={<ItemPanel/>}/>
+
+
+                </Routes>
             </BrowserRouter>
         </div>
     );

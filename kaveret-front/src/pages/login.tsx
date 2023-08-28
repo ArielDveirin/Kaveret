@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react'
 
 
-const Login=(props: { setName: (name: string) => void })=> {
+const Login=()=> {
     const navigate = useNavigate();
 
     const paperStyle={padding : 20, height:'70vh', width:300, margin:"20px auto"}
@@ -15,27 +15,46 @@ const Login=(props: { setName: (name: string) => void })=> {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [direct, setRedirect] = useState(false);
+    const [data, setData] = useState({data: []})
+    const [isLoading, setIsLoading] = useState(false);
+
+    const [err, setErr] = useState('');
 
     //const response = await fetch('http://localhost:3002/login', {
   
     const handleClick = async () => {
     
-        const response = await fetch('http://localhost:3002/login', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            credentials: 'include',
-            body: JSON.stringify({
-                Username: username,
-                Password: password,
-             }),
-        });
-          
-        const content = await response.json();
+        try {
+            const response = await fetch('http://localhost:3002/login', {
+              method: 'POST',
+              credentials: 'include',
+              body: JSON.stringify({
+                  Username: username,
+                  Password: password,
+               }),
+            });
+      
+            if (!response.ok) {
+              throw new Error(`Error! status: ${response.status}`);
+            }
+      
+            const result = await response.json();
+            setData(result);
+          } 
+          catch(error)
+          {
+              setErr('Error');
+          }
+          finally {
+            setRedirect(true);
+            alert('התחברות בוצעה בהצלחה!');
 
-        setRedirect(true);
-        props.setName(content.name);
+          }
+          
+        
     }
     if (direct) {
+            window.location.reload();
             navigate('/');
     }
         
@@ -43,26 +62,29 @@ const Login=(props: { setName: (name: string) => void })=> {
 
 
     return (
-            <Grid>
+            <Grid dir='rtl'>
                 <Paper elevation={10} style={paperStyle}>
                     <Grid>
-                    <h2>Sign In</h2>
+                    <h2>כניסה למערכת</h2>
                     </Grid>
-                    <TextField label='Username'   color="warning"
-placeholder='Enter Username' fullWidth required onChange={e => setUsername(e.target.value)}/>
+                    <TextField label='שם משתמש'  dir='rtl' color="warning"
+placeholder='הכנס שם משתמש' fullWidth required onChange={e => setUsername(e.target.value)}/>
                     <br/>
                     <br/>
-                    <TextField label='Password'   color="warning"
-placeholder='Enter Password'  fullWidth required onChange={e => setPassword(e.target.value)}/>
+                    <TextField label='סיסמא'  dir='rtl' color="warning"
+placeholder='הכנס סיסמא'  fullWidth required onChange={e => setPassword(e.target.value)}/>
                     <br/>
                     <br/>
 
-                    <Button style={btnStyle} type='submit' variant='contained' color='primary' onClick={handleClick} fullWidth>Sign In</Button>
+                    <Button  type='submit' variant='contained' sx={{ color:'primary', backgroundColor: 'orange', '&:hover': {
+            backgroundColor: '#00e676',
+            color: 'black',
+        } }} onClick={handleClick} fullWidth>כניסה</Button>
                     <br/>
                     <br/>
                     <Link
-                        to="/register">
-                    Dont have an account?
+                        to="/הרשמה">
+                    רוצה להרשם?
                     </Link>
                     
                 </Paper>

@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 
+	"fmt"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -92,6 +93,8 @@ func Login(c *gin.Context) {
 	var user models.User
 	initializers.DB.First(&user, "username = ?", body.Username)
 
+	fmt.Println("User Found")
+
 	if user.ID == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Username or Password incorrect",
@@ -111,8 +114,31 @@ func Login(c *gin.Context) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"userid": user.ID,
-		"exp":    time.Now().Add(time.Hour * 24 * 30).Unix(),
+		"userid":  user.ID,
+		"exp":     time.Now().Add(time.Hour * 24 * 30).Unix(),
+		"isAdmin": user.Permission,
+	})
+
+	// Sign and get the complete encoded token as a string using the secret
+	tokenString, err := token.SignedString([]byte(os.Getenv("SECRET")))
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Token string could not be created",
+		})
+		return
+	}
+	c.SetSameSite(http.SameSiteLaxMode)
+	c.SetCookie("Auth", tokenString, 3600*24*30, "", "", false, true)
+
+}
+
+func Logout(c *gin.Context) {
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"userid":  -1,
+		"exp":     time.Now().Add(-time.Hour).Unix(),
+		"isAdmin": "client",
 	})
 
 	// Sign and get the complete encoded token as a string using the secret
@@ -131,6 +157,7 @@ func Login(c *gin.Context) {
 
 func Validate(c *gin.Context) {
 	user, _ := c.Get("user")
+
 	c.JSON(http.StatusOK, gin.H{
 		"message": user,
 	})
