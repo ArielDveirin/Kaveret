@@ -47,6 +47,8 @@ const Login=()=> {
           }
           finally {
             setRedirect(true);
+            alert('התחברות בוצעה בהצלחה!');
+
           }
           
         
@@ -74,7 +76,10 @@ placeholder='הכנס סיסמא'  fullWidth required onChange={e => setPassword
                     <br/>
                     <br/>
 
-                    <Button style={btnStyle} type='submit' variant='contained' color='primary' onClick={handleClick} fullWidth>כניסה</Button>
+                    <Button  type='submit' variant='contained' sx={{ color:'primary', backgroundColor: 'orange', '&:hover': {
+            backgroundColor: '#00e676',
+            color: 'black',
+        } }} onClick={handleClick} fullWidth>כניסה</Button>
                     <br/>
                     <br/>
                     <Link

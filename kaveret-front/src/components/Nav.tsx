@@ -62,6 +62,7 @@ function ResponsiveAppBar(props: { name: string, setName: (name: string) => void
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+
   const [err, setErr] = useState('');
   let check;
   
@@ -193,7 +194,54 @@ function ResponsiveAppBar(props: { name: string, setName: (name: string) => void
           </Search>
           
           <Typography >
-          {props.name ? 'היי ' + props.name : 'You are not logged in'}          </Typography>
+            {props.name ? 'היי ' + props.name : 'You are not logged in'}       
+          </Typography>
+
+          <Box sx={{paddingRight:"50px"}}>
+
+          {!props.name &&
+          <Button variant="contained" sx={{minWidth: '50px', minHeight: '50px', fontSize:'20px', color:'primary', backgroundColor: 'orange', '&:hover': {
+            backgroundColor: '#ffcf33',
+        } }}
+            onClick={async () => {
+              window.location.href='/כניסה'
+            }}
+          >
+            התחבר
+          </Button>
+          }
+
+    {props.name != "" &&
+          <Button variant="contained" color="error" sx={{minWidth: '100px', minHeight: '50px', fontSize:'20px', '&:hover': {
+            backgroundColor: '#ff4569',
+        }}}
+            onClick={async () => {
+              try {
+                const response = await fetch('http://localhost:3002/logout', {
+                  method: 'GET',
+                  credentials: 'include',
+                });
+          
+                if (!response.ok) {
+                  throw new Error(`Error! status: ${response.status}`);
+                }
+          
+                const result = await response.json();
+              } 
+              catch(error)
+              {
+                  setErr('Error');
+              }
+              window.location.reload();
+              alert('התנתקות בוצעה בהצלחה!');
+            }}
+          >
+            התנתק
+          </Button>
+          }   
+
+
+          </Box>    
         </Toolbar>
       </Container>
     </AppBar>

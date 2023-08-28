@@ -1,10 +1,13 @@
 package main
 
 import (
+	"fmt"
 	"kaveretBack/controllers"
 	"kaveretBack/initializers"
 	"kaveretBack/middleware"
+	"net/http"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -24,20 +27,48 @@ func postRegisterDetails(c *gin.Context) {
 }
 
 func postLoginDetails(c *gin.Context) {
+
 	controllers.Login(c)
+}
+
+func checkAdmin(c *gin.Context) {
+
+	check := middleware.IsAdmin(c)
+
+	if check {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "User IS ADMIN",
+		})
+		fmt.Println("User IS ADMIN")
+
+	} else {
+		c.JSON(http.StatusForbidden, gin.H{
+			"message": "User IS NOT ADMIN",
+		})
+		fmt.Println("User IS NOT ADMIN")
+	}
+}
+
+func LogoutAction(c *gin.Context) {
+
+	controllers.Logout(c)
 }
 
 func main() {
 	r := gin.Default()
-	r.POST("", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
 
-	})
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:3000"}, // Add more origins if needed
+		AllowMethods:     []string{"POST", "GET"},
+		AllowCredentials: true,
+	}))
+
 	r.POST("/register", postRegisterDetails)
 	r.POST("/login", postLoginDetails)
-	r.GET("/", middleware.RequireAuth, controllers.Validate)
+	r.GET("/logout", LogoutAction)
+
+	r.GET("/validate", middleware.RequireAuth, controllers.Validate)
+	r.GET("/isAdmin", checkAdmin)
 
 	r.Run() // listen and serve on 0.0.0.0:8080
 }

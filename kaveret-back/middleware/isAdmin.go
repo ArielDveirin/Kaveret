@@ -12,9 +12,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func RequireAuth(c *gin.Context) {
+func IsAdmin(c *gin.Context) bool {
 	tokenString, err := c.Cookie("Auth")
-	fmt.Println("TOKEN STRING: ", tokenString)
 	if err != nil {
 		c.AbortWithStatus(http.StatusUnauthorized)
 	}
@@ -36,10 +35,14 @@ func RequireAuth(c *gin.Context) {
 		var user models.User
 		initializers.DB.First(&user, claims["userid"])
 
-		c.Set("user", user)
-		c.Next()
+		if user.Permission == "client" {
+			return false
+		} else {
+			return true
+		}
 
 	} else {
 		c.AbortWithStatus(http.StatusUnauthorized)
 	}
+	return false
 }
