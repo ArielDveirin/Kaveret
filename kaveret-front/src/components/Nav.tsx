@@ -14,8 +14,9 @@ import SearchIcon from '@mui/icons-material/Search';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const pages = ['מוצרים', 'מבצעים', 'כניסה'];
+const pages = ['מוצרים', 'מבצעים'];
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -59,6 +60,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 function ResponsiveAppBar(props: { name: string, setName: (name: string) => void }) {
+  const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -66,16 +68,6 @@ function ResponsiveAppBar(props: { name: string, setName: (name: string) => void
   const [err, setErr] = useState('');
   let check;
   
-  
-
-  useEffect(() => {
-    checkAdmin()
-    if (!isAdmin && pages.length > 3) {
-      pages.pop()
-    }else if(isAdmin && pages.length < 4) {
-      pages.push('מנהל')
-    }
-  });
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -90,6 +82,28 @@ function ResponsiveAppBar(props: { name: string, setName: (name: string) => void
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleItemPanel = () => {
+    setAnchorEl(null);
+    navigate('/ניהול_מוצרים');
+
+  };
+
+  const handleUserPanel = () => {
+    setAnchorEl(null);
+    navigate('/ניהול_מוצרים');
+
   };
 
   async function checkAdmin() {
@@ -179,6 +193,35 @@ function ResponsiveAppBar(props: { name: string, setName: (name: string) => void
                 </Link>
               </Button>
             ))}
+
+            {props.name != "" &&
+           <div>
+           <Button
+           sx={{fontSize:'30px', color:'black', backgroundColor: 'white', paddingTop:'20px',paddingRight:'30px',}}
+  
+             id="basic-button"
+             aria-controls={open ? 'basic-menu' : undefined}
+             aria-haspopup="true"
+             aria-expanded={open ? 'true' : undefined}
+             onClick={handleClick}
+           >
+             ניהול
+           </Button>
+           <Menu 
+              dir='rtl'
+             id="basic-menu"
+             anchorEl={anchorEl}
+             open={open}
+             onClose={handleClose}
+             MenuListProps={{
+               'aria-labelledby': 'basic-button',
+             }}
+           >
+             <MenuItem onClick={handleItemPanel}>ניהול מוצרים</MenuItem>
+             <MenuItem onClick={handleUserPanel}>ניהול משתמשים</MenuItem>
+           </Menu>
+         </div>
+            }
           </Box>
          
           <Search dir='ltr'>

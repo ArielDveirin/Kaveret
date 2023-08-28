@@ -7,6 +7,8 @@ import Home from "./pages/Home";
 import Register from "./pages/register";
 import Login from './pages/login';
 import AdminPanel from './pages/adminPanel'
+import ItemPanel from './pages/ItemPanel'
+
 import ResponsiveAppBar from './components/Nav';
 
 function App() {
@@ -60,6 +62,10 @@ function App() {
                     <Route path="/הרשמה" element={<Register />} />
 
                     <Route path="/מנהל" element={<AdminPanel/>}/>
+
+                    <Route path="/ניהול_מוצרים" element={<ItemPanel/>}/>
+
+
                 </Routes>
             </BrowserRouter>
         </div>
