@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"kaveretBack/controllers"
+	"kaveretBack/dbOperations"
 	"kaveretBack/initializers"
 	"kaveretBack/middleware"
 	"net/http"
@@ -54,6 +55,14 @@ func LogoutAction(c *gin.Context) {
 	controllers.Logout(c)
 }
 
+func postAddItem(c *gin.Context) {
+	dbOperations.AddItem(c)
+}
+
+func getItems(c *gin.Context) {
+	dbOperations.GetItems(c)
+}
+
 func main() {
 	r := gin.Default()
 
@@ -69,6 +78,9 @@ func main() {
 
 	r.GET("/validate", middleware.RequireAuth, controllers.Validate)
 	r.GET("/isAdmin", checkAdmin)
+
+	r.POST("/addItem", checkAdmin, middleware.RequireAuth, postAddItem)
+	r.GET("/getItems", checkAdmin, middleware.RequireAuth, getItems)
 
 	r.Run() // listen and serve on 0.0.0.0:8080
 }

@@ -10,6 +10,7 @@ import AdminPanel from './pages/adminPanel'
 import ItemPanel from './pages/ItemPanel'
 
 import ResponsiveAppBar from './components/Nav';
+import ResponsiveDrawer from './components/ResponsiveDrawer';
 
 function App() {
     const [name, setName] = useState('');
@@ -49,7 +50,7 @@ function App() {
         <div className="App">
 
             <BrowserRouter>
-                <ResponsiveAppBar name={name} setName={function (name: string): void {
+                <ResponsiveDrawer name={name} setName={function (name: string): void {
                     throw new Error('Function not implemented.');
                 } }/>
                 
@@ -63,7 +64,7 @@ function App() {
 
                     <Route path="/מנהל" element={<AdminPanel/>}/>
 
-                    <Route path="/ניהול_מוצרים" element={<ItemPanel/>}/>
+                    <Route path="/ניהול מוצרים" element={<ItemPanel/>}/>
 
 
                 </Routes>
