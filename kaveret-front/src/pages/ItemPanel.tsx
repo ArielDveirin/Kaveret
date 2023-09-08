@@ -32,6 +32,26 @@ const [items, setItems] = useState<Item[]>([]);
   const [Price, setPrice] = useState("")
   const [Quantity, setQuantity] = useState("")
   
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [err, setErr] = useState('');
+
+
+  async function checkAdmin() {
+    try {
+      const response = await fetch('http://localhost:3002/isAdmin', {
+        method: 'GET',
+        credentials: 'include',
+      });
+  
+      if (response.ok) {
+        setIsAdmin(true)
+      }
+    } 
+    catch(error)
+    {
+        setErr('Error');
+    }
+  }
   useEffect(() => {
     (
       async () => {
@@ -43,27 +63,11 @@ const [items, setItems] = useState<Item[]>([]);
   
           if (response.ok) {
             const responseBody = await response.text(); // Get the response text
-  
-            // Split the response into separate JSON objects
-            const jsonObjects = responseBody.split('}{');
-  
-            // Ensure there are at least two JSON objects
-            if (jsonObjects.length >= 2) {
-              // Parse the second JSON object (items)
-              const itemsJSON = JSON.parse(`{${jsonObjects[1]}}`);
-  
-              // Check if itemsJSON.message is an array (items)
-              if (Array.isArray(itemsJSON.message)) {
-                // Set the items into the items state
-                setItems(itemsJSON.message);
-              } else {
-                // Handle the case where the API response is unexpected
-                console.error('Unexpected API response:', itemsJSON);
-              }
-            } else {
-              // Handle the case where there are not enough JSON objects in the response
-              console.error('Unexpected API response format:', responseBody);
-            }
+            
+            const jsonItems = JSON.parse((responseBody.toString()));
+
+            setItems(jsonItems.items);
+            
           } else {
             // Handle the case where the API request is not successful
           }
@@ -106,7 +110,7 @@ const [items, setItems] = useState<Item[]>([]);
             alert('שמירת הפריט לא צלחה :(');
 
           throw new Error(`Error! status: ${response.status}`);
-
+          
         }
         else {
             alert('הפריט נשמר!');
@@ -122,6 +126,10 @@ const [items, setItems] = useState<Item[]>([]);
     setOpenDialog(false);
   };
 
+  checkAdmin();
+
+  if (isAdmin)
+  {
   return (
     <div>
       <Button variant="contained" color="primary" onClick={handleAddClick}>
@@ -206,6 +214,14 @@ const [items, setItems] = useState<Item[]>([]);
       </Dialog>
     </div>
   );
+            }
+            else {
+              return (
+                <div>
+                    {isAdmin ? 'Hi Admin User' : 'You are not Admin'}
+                </div>
+            );
+            }
 };
 
 export default ItemPanel;

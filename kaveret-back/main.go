@@ -80,7 +80,7 @@ func main() {
 	r.GET("/isAdmin", checkAdmin)
 
 	r.POST("/addItem", checkAdmin, middleware.RequireAuth, postAddItem)
-	r.GET("/getItems", checkAdmin, middleware.RequireAuth, getItems)
+	r.GET("/getItems", middleware.RequireAuth, getItems)
 
 	r.Run() // listen and serve on 0.0.0.0:8080
 }
