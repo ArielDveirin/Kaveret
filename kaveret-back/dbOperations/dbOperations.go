@@ -67,3 +67,43 @@ func GetItems(c *gin.Context) {
 		"items": items,
 	})
 }
+
+func EditItem(c *gin.Context) {
+	jsonData, err := ioutil.ReadAll(c.Request.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var body models.Item
+
+	parseErr := json.Unmarshal(jsonData, &body)
+
+	if parseErr != nil {
+
+		// if error is not nil
+		// print error
+		log.Fatal(parseErr)
+	}
+	fmt.Println("Item Name: " + body.Name)
+	var item models.Item
+
+	initializers.DB.First(&item)
+
+	//hash the password
+
+	fmt.Println(item.ID)
+
+	//result := initializers.DB.Save(&newItem)
+	result := initializers.DB.Model(&item).Where(&item).Updates(&body)
+	if result.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "ITEM COULD NOT BE UPDATED",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "ITEM UPDATED",
+	})
+
+}

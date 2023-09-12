@@ -17,10 +17,11 @@ import {
 } from '@mui/material';
 
 interface Item {
-  ID: number;
+  ID?: number;
   name: string;
   Price: string;
   Quantity: string;
+  ItemId: number;
 }
 
 const ItemPanel: React.FC = () => {
@@ -33,7 +34,8 @@ const [items, setItems] = useState<Item[]>([]);
   const [ItemName, setItemName] = useState("")
   const [Price, setPrice] = useState("")
   const [Quantity, setQuantity] = useState("")
-  
+  const [id, setID] = useState(0)
+
   const [isAdmin, setIsAdmin] = useState(false);
   const [err, setErr] = useState('');
 
@@ -130,24 +132,26 @@ const [items, setItems] = useState<Item[]>([]);
 
   const handleEdit = async () => {
     try {
-        const response = await fetch('http://localhost:3002/updateItem', {
+        const response = await fetch('http://localhost:3002/EditItem', {
           method: 'POST',
           credentials: 'include',
           body: JSON.stringify({
               Name: ItemName,
               Quantity: Quantity,
               Price: Price,
+              Item_Id: id,
            }),
         });
   
         if (!response.ok) {
-            alert('שמירת הפריט לא צלחה :(');
+            alert('עדכון הפריט לא צלחה :(');
 
           throw new Error(`Error! status: ${response.status}`);
           
         }
         else {
-            alert('הפריט נשמר!');
+            alert(id);
+            alert('הפריט עודכן!');
 
         }
   
@@ -254,23 +258,23 @@ const [items, setItems] = useState<Item[]>([]);
             Fill in the details for the item.
           </DialogContentText>
           <TextField
-            label={selectedItem?.name}
-            onChange={e => setItemName(e.target.value)}            
+            label={"Current Name: "+selectedItem?.name}
+            onChange={e => setItemName(e.target.value)}   
+         
             fullWidth
             margin="normal"
           />
           <TextField
-            label="Price"
+            label={"Current Price: "+selectedItem?.Price}
             onChange={e => setPrice(e.target.value)}            
-            
+
             type="number"
             fullWidth
             margin="normal"
           />
           <TextField
-            label="Amount in Stock"
+            label={"Current Quantity: "+selectedItem?.Quantity}
             onChange={e => setQuantity(e.target.value)}            
-    
             type="number"
             fullWidth
             margin="normal"
@@ -280,7 +284,9 @@ const [items, setItems] = useState<Item[]>([]);
           <Button onClick={() => setOpenEditDialog(false)} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleEdit} color="primary">
+          <Button onClick={() => {handleEdit();
+
+          }} color="primary">
             Save
           </Button>
         </DialogActions>

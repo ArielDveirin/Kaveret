@@ -59,6 +59,10 @@ func postAddItem(c *gin.Context) {
 	dbOperations.AddItem(c)
 }
 
+func postEditItem(c *gin.Context) {
+	dbOperations.EditItem(c)
+}
+
 func getItems(c *gin.Context) {
 	dbOperations.GetItems(c)
 }
@@ -80,6 +84,8 @@ func main() {
 	r.GET("/isAdmin", checkAdmin)
 
 	r.POST("/addItem", checkAdmin, middleware.RequireAuth, postAddItem)
+	r.POST("/EditItem", checkAdmin, middleware.RequireAuth, postEditItem)
+
 	r.GET("/getItems", middleware.RequireAuth, getItems)
 
 	r.Run() // listen and serve on 0.0.0.0:8080
