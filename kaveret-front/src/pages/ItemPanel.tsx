@@ -17,15 +17,17 @@ import {
 } from '@mui/material';
 
 interface Item {
-  id: number;
+  ID: number;
   name: string;
-  price: number;
-  quantity: number;
+  Price: string;
+  Quantity: string;
 }
 
 const ItemPanel: React.FC = () => {
 const [items, setItems] = useState<Item[]>([]);
   const [openDialog, setOpenDialog] = useState(false);
+  const [openEditDialog, setOpenEditDialog] = useState(false);
+
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
 
   const [ItemName, setItemName] = useState("")
@@ -82,7 +84,7 @@ const [items, setItems] = useState<Item[]>([]);
   //setItems(data);
   const handleEditClick = (item: Item) => {
     setSelectedItem(item);
-    setOpenDialog(true);
+    setOpenEditDialog(true);
   };
 
   const handleAddClick = () => {
@@ -97,6 +99,38 @@ const [items, setItems] = useState<Item[]>([]);
   const handleSave = async () => {
     try {
         const response = await fetch('http://localhost:3002/addItem', {
+          method: 'POST',
+          credentials: 'include',
+          body: JSON.stringify({
+              Name: ItemName,
+              Quantity: Quantity,
+              Price: Price,
+           }),
+        });
+  
+        if (!response.ok) {
+            alert('שמירת הפריט לא צלחה :(');
+
+          throw new Error(`Error! status: ${response.status}`);
+          
+        }
+        else {
+            alert('הפריט נשמר!');
+
+        }
+  
+        const result = await response.json();
+      } 
+      catch(error)
+      {
+      }
+    
+    setOpenDialog(false);
+  };
+
+  const handleEdit = async () => {
+    try {
+        const response = await fetch('http://localhost:3002/updateItem', {
           method: 'POST',
           credentials: 'include',
           body: JSON.stringify({
@@ -148,11 +182,11 @@ const [items, setItems] = useState<Item[]>([]);
           </TableHead>
           <TableBody>
             {items.map((item) => (
-              <TableRow key={item.id}>
-                <TableCell>{item.id}</TableCell>
+              <TableRow key={item.ID}>
+                <TableCell>{item.ID}</TableCell>
                 <TableCell>{item.name}</TableCell>
-                <TableCell>{item.price}</TableCell>
-                <TableCell>{item.quantity}</TableCell>
+                <TableCell>{item.Price}</TableCell>
+                <TableCell>{item.Quantity}</TableCell>
                 <TableCell>
                   <Button
                     variant="outlined"
@@ -175,7 +209,7 @@ const [items, setItems] = useState<Item[]>([]);
         </Table>
       </TableContainer>
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-        <DialogTitle>{selectedItem ? 'Edit Item' : 'Add Item'}</DialogTitle>
+        <DialogTitle>Add Item</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Fill in the details for the item.
@@ -212,6 +246,46 @@ const [items, setItems] = useState<Item[]>([]);
           </Button>
         </DialogActions>
       </Dialog>
+      
+      <Dialog open={openEditDialog} onClose={() => setOpenEditDialog(false)}>
+        <DialogTitle>Edit Item</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Fill in the details for the item.
+          </DialogContentText>
+          <TextField
+            label={selectedItem?.name}
+            onChange={e => setItemName(e.target.value)}            
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Price"
+            onChange={e => setPrice(e.target.value)}            
+            
+            type="number"
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Amount in Stock"
+            onChange={e => setQuantity(e.target.value)}            
+    
+            type="number"
+            fullWidth
+            margin="normal"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenEditDialog(false)} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleEdit} color="primary">
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
+
     </div>
   );
             }
