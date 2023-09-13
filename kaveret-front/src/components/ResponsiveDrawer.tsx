@@ -145,6 +145,28 @@ export default function ResponsiveDrawer(props: { name: string, setName: (name: 
   const handleLogin = () => {
     setAnchorEl(null);
     navigate('/כניסה');
+  };
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('http://localhost:3002/logout', {
+        method: 'GET',
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+    } 
+    catch(error)
+    {
+        setErr('Error');
+    }
+    window.location.reload();
+    alert('התנתקות בוצעה בהצלחה!');
+    navigate('/');
 
   };
 
@@ -173,6 +195,7 @@ export default function ResponsiveDrawer(props: { name: string, setName: (name: 
     }
   }
 
+  checkAdmin();
   return (
     <Box sx={{ display: 'flex' }}>
       
@@ -202,6 +225,7 @@ export default function ResponsiveDrawer(props: { name: string, setName: (name: 
              
              onMouseOver={handleClick}
              onClick={handleClose}
+             
            >
             <PersonOutlineTwoToneIcon sx={{color:"#f8c40c", outlineColor:"black", position:"relative", fontSize:"40px", paddingLeft:"10%", outline:"10px"}}/>
              חשבון  
@@ -216,8 +240,10 @@ export default function ResponsiveDrawer(props: { name: string, setName: (name: 
                'aria-labelledby': 'basic-button',
              }}
            >
-             <MenuItem onClick={handleLogin}>כניסה</MenuItem>
-             <MenuItem onClick={handleRegister}>הרשמה</MenuItem>
+            {props.name == "" && <><MenuItem onClick={handleLogin}>כניסה</MenuItem><MenuItem onClick={handleRegister}>הרשמה</MenuItem></>}
+            {props.name != "" && <><MenuItem onClick={handleLogout}>התנתקות</MenuItem></>}
+
+             
            </Menu>
          </div>
          </Box>
@@ -271,19 +297,20 @@ export default function ResponsiveDrawer(props: { name: string, setName: (name: 
             </ListItem>
           ))}
         </List>
-        <Divider />
-        <List dir="rtl">
-          {['ניהול מוצרים', 'ניהול משתמשים'].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton onClick={() => redirectPage(text)}>*
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
+        {isAdmin &&
+        <><Divider /><List dir="rtl">
+            {['ניהול מוצרים', 'ניהול משתמשים'].map((text, index) => (
+              <ListItem key={text} disablePadding>
+                <ListItemButton onClick={() => redirectPage(text)}>*
+                  <ListItemIcon>
+                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  </ListItemIcon>
+                  <ListItemText primary={text} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List></>
+        }
       </Drawer>
     </Box>
   );

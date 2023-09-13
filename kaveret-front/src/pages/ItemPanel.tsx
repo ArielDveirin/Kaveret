@@ -93,9 +93,37 @@ const [items, setItems] = useState<Item[]>([]);
     setOpenDialog(true);
   };
 
-  const handleDeleteClick = (item: Item) => {
-    // Implement the delete logic here and update the "items" state.
-    // Replace this with your actual delete API call.
+  const handleDeleteClick = async (item: Item) => {
+    try {
+      const response = await fetch('http://localhost:3002/DeleteItem', {
+        method: 'POST',
+        credentials: 'include',
+        body: JSON.stringify({
+            Name: ItemName,
+            Quantity: Quantity,
+            Price: Price,
+            Item_Id: id,
+         }),
+      });
+
+      if (!response.ok) {
+          alert('מחיקת הפריט לא צלחה :(');
+
+        throw new Error(`Error! status: ${response.status}`);
+        
+      }
+      else {
+          alert('הפריט נמחק!');
+
+      }
+
+      const result = await response.json();
+    } 
+    catch(error)
+    {
+    }
+  
+  setOpenDialog(false);
   };
 
   const handleSave = async () => {
