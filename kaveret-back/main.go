@@ -63,6 +63,10 @@ func postEditItem(c *gin.Context) {
 	dbOperations.EditItem(c)
 }
 
+func postDeleteItem(c *gin.Context) {
+	dbOperations.DeleteItem(c)
+}
+
 func getItems(c *gin.Context) {
 	dbOperations.GetItems(c)
 }
@@ -84,6 +88,7 @@ func main() {
 	r.GET("/isAdmin", checkAdmin)
 
 	r.POST("/addItem", checkAdmin, middleware.RequireAuth, postAddItem)
+	r.POST("/deleteItem", checkAdmin, middleware.RequireAuth, postDeleteItem)
 	r.POST("/EditItem", checkAdmin, middleware.RequireAuth, postEditItem)
 
 	r.GET("/getItems", middleware.RequireAuth, getItems)

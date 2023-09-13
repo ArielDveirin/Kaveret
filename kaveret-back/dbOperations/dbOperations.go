@@ -29,7 +29,6 @@ func AddItem(c *gin.Context) {
 		// print error
 		log.Fatal(parseErr)
 	}
-	fmt.Println("Item Name: " + body.Name)
 	var item models.Item
 
 	initializers.DB.First(&item, "name = ?", body.Name)
@@ -84,17 +83,47 @@ func EditItem(c *gin.Context) {
 		// print error
 		log.Fatal(parseErr)
 	}
-	fmt.Println("Item Name: " + body.Name)
+
 	var item models.Item
 
 	initializers.DB.First(&item)
 
 	//hash the password
 
-	fmt.Println(item.ID)
-
 	//result := initializers.DB.Save(&newItem)
 	result := initializers.DB.Model(&item).Where(&item).Updates(&body)
+	if result.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "ITEM COULD NOT BE UPDATED",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "ITEM UPDATED",
+	})
+
+}
+
+func DeleteItem(c *gin.Context) {
+	jsonData, err := ioutil.ReadAll(c.Request.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var body models.Item
+
+	parseErr := json.Unmarshal(jsonData, &body)
+	fmt.Printf("id: %d , name: %s", body.ID, body.Name)
+	if parseErr != nil {
+
+		// if error is not nil
+		// print error
+		log.Fatal(parseErr)
+	}
+
+	//result := initializers.DB.Save(&newItem)
+	result := initializers.DB.Model(&body).Where(&body).Delete(&body)
 	if result.Error != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "ITEM COULD NOT BE UPDATED",

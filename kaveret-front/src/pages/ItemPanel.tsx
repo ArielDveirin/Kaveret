@@ -95,26 +95,25 @@ const [items, setItems] = useState<Item[]>([]);
 
   const handleDeleteClick = async (item: Item) => {
     try {
-      const response = await fetch('http://localhost:3002/DeleteItem', {
+      const response = await fetch('http://localhost:3002/deleteItem', {
         method: 'POST',
         credentials: 'include',
         body: JSON.stringify({
-            Name: ItemName,
-            Quantity: Quantity,
-            Price: Price,
-            Item_Id: id,
+            Name: item.name,
+            Quantity: item.Quantity,
+            Price: item.Price,
+            Item_Id: item.ID,
          }),
       });
 
       if (!response.ok) {
           alert('מחיקת הפריט לא צלחה :(');
-
-        throw new Error(`Error! status: ${response.status}`);
+          throw new Error(`Error! status: ${response.status}`);
         
       }
       else {
           alert('הפריט נמחק!');
-
+          window.location.reload();
       }
 
       const result = await response.json();
@@ -146,6 +145,8 @@ const [items, setItems] = useState<Item[]>([]);
         }
         else {
             alert('הפריט נשמר!');
+            window.location.reload();
+
 
         }
   
@@ -179,6 +180,7 @@ const [items, setItems] = useState<Item[]>([]);
         }
         else {
             alert('הפריט עודכן!');
+            window.location.reload();
 
         }
   
@@ -229,7 +231,7 @@ const [items, setItems] = useState<Item[]>([]);
                   <Button
                     variant="outlined"
                     color="secondary"
-                    onClick={() => handleDeleteClick(item)}
+                    onClick={() => {handleDeleteClick(item)}}
                   >
                     Delete
                   </Button>
