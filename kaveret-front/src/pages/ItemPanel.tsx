@@ -150,7 +150,6 @@ const [items, setItems] = useState<Item[]>([]);
           
         }
         else {
-            alert(id);
             alert('הפריט עודכן!');
 
         }

@@ -192,16 +192,14 @@ export default function ResponsiveDrawer(props: { name: string, setName: (name: 
             
           </Search>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, paddingRight:'77%', minHeight:"100%",width:"100%",}}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, paddingRight:'65%', minHeight:"100%",width:"100%",}}>
 
           <div>
 
            <Button
-           sx={{ color:'black', backgroundColor: 'white', fontSize:'20px' }}
+           sx={{ color:'black', backgroundColor: 'white', fontSize:'20px', paddingLeft:"50rem" }}
              id="basic-button"
-             aria-controls={opened ? 'basic-menu' : undefined}
-             aria-haspopup="true"
-             aria-expanded={opened ? 'true' : undefined}
+             
              onMouseOver={handleClick}
              onClick={handleClose}
            >
