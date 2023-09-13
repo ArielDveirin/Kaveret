@@ -123,7 +123,7 @@ func DeleteItem(c *gin.Context) {
 	}
 
 	//result := initializers.DB.Save(&newItem)
-	result := initializers.DB.Model(&body).Where(&body).Delete(&body)
+	result := initializers.DB.Unscoped().Where(&body).Delete(&body)
 	if result.Error != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "ITEM COULD NOT BE UPDATED",

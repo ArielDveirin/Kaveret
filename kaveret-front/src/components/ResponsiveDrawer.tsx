@@ -301,7 +301,7 @@ export default function ResponsiveDrawer(props: { name: string, setName: (name: 
         <><Divider /><List dir="rtl">
             {['ניהול מוצרים', 'ניהול משתמשים'].map((text, index) => (
               <ListItem key={text} disablePadding>
-                <ListItemButton onClick={() => redirectPage(text)}>*
+                <ListItemButton onClick={() => redirectPage(text)}>
                   <ListItemIcon>
                     {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
                   </ListItemIcon>
