@@ -45,25 +45,27 @@ const Home = (props: { name: string }) => {
   return (
     <Grid container spacing={2} paddingLeft={"5%"} paddingRight={"20%"}>
       {items.map((item, index) => (
-        <Grid item xs={12} sm={6} md={4} key={index} >
+        <Grid item xs={14} sm={10} md={3} key={index} >
       <Box sx={{ boxShadow: 12}}>
       <Card style={{ height: '100%',width:"100%", display: 'flex', flexDirection: 'column'}}>
             <CardMedia
               component="img"
               alt={item.name}
               height="140"
-              style={{height:"17rem", width:"100%"}} // Adjust image styling as needed
+            
+              style={{height:"10rem", width:"10rem", alignSelf:"center"}} // Adjust image styling as needed
+              
               image={item.ImageUrl} // Update with your image URL field
             />
             <CardContent style={{ flexGrow: 1 }} dir="rtl">
             <Typography variant="h6">------------●------------</Typography>
 
-              <Typography variant="h6">{item.name} </Typography>
+              <Typography variant="body1">{item.name} </Typography>
               <Typography variant="body2" color={"#f8b904"} fontWeight={"bold"}>מחיר: ₪{item.Price}</Typography>
-              <Button
+              <Button 
               variant="contained"
               color="primary"
-              sx={{width:"35%", backgroundColor:"#fcbc06", color:"black", fontWeight:"bold"}}
+              sx={{width:"50%", backgroundColor:"#fcbc06", color:"black", fontWeight:"bold"}}
               onClick={() => addToCart(item)}
             >
               הוסף לסל
