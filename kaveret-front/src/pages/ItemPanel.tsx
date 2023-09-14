@@ -29,12 +29,13 @@ const [items, setItems] = useState<Item[]>([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [openEditDialog, setOpenEditDialog] = useState(false);
 
-  const [selectedItem, setSelectedItem] = useState<Item | null>(null);
+  const [selectedItem, setSelectedItem] = useState<Item | null>();
+  const [selectedItemId, setSelectedItemID] = useState<number | null>(null);
 
   const [ItemName, setItemName] = useState("")
   const [Price, setPrice] = useState("")
   const [Quantity, setQuantity] = useState("")
-  const [id, setID] = useState(0)
+  const [id, setID] = useState<number | null>(null);
 
   const [isAdmin, setIsAdmin] = useState(false);
   const [err, setErr] = useState('');
@@ -112,6 +113,7 @@ const [items, setItems] = useState<Item[]>([]);
         
       }
       else {
+      
           alert('הפריט נמחק!');
           window.location.reload();
       }
@@ -159,7 +161,7 @@ const [items, setItems] = useState<Item[]>([]);
     setOpenDialog(false);
   };
 
-  const handleEdit = async () => {
+  const handleEdit = async (item: Item) => {
     try {
         const response = await fetch('http://localhost:3002/EditItem', {
           method: 'POST',
@@ -168,7 +170,7 @@ const [items, setItems] = useState<Item[]>([]);
               Name: ItemName,
               Quantity: Quantity,
               Price: Price,
-              Item_Id: id,
+              ID: item.ID,
            }),
         });
   
@@ -224,7 +226,7 @@ const [items, setItems] = useState<Item[]>([]);
                   <Button
                     variant="outlined"
                     color="primary"
-                    onClick={() => handleEditClick(item)}
+                    onClick={() => {handleEditClick(item)}}
                   >
                     Edit
                   </Button>
@@ -308,17 +310,20 @@ const [items, setItems] = useState<Item[]>([]);
             fullWidth
             margin="normal"
           />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenEditDialog(false)} color="primary">
+
+        <Button onClick={() => setOpenEditDialog(false)} color="primary">
             Cancel
           </Button>
-          <Button onClick={() => {handleEdit();
-
+          <Button  onClick={() => {
+                if (selectedItem) 
+                {
+                  handleEdit(selectedItem);
+                }
           }} color="primary">
             Save
           </Button>
-        </DialogActions>
+        </DialogContent>
+        
       </Dialog>
 
     </div>

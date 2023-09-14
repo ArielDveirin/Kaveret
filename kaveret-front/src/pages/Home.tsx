@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, Typography, Button, Grid, CardMedia } from '@mui/material';
+import { Card, CardContent, Typography, Button, Grid, CardMedia, Box } from '@mui/material';
+import { shadows } from '@mui/system';
+
 
 interface Item {
   ID?: number;
@@ -44,26 +46,31 @@ const Home = (props: { name: string }) => {
     <Grid container spacing={2} paddingLeft={"5%"} paddingRight={"20%"}>
       {items.map((item, index) => (
         <Grid item xs={12} sm={6} md={4} key={index} >
-          <Card style={{ height: '100%', display: 'flex', flexDirection: 'column',   boxShadow:"0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)5px 10px"}}>
+      <Box sx={{ boxShadow: 12}}>
+      <Card style={{ height: '100%',width:"100%", display: 'flex', flexDirection: 'column'}}>
             <CardMedia
               component="img"
               alt={item.name}
               height="140"
-              style={{height:"100%", width:"100%"}} // Adjust image styling as needed
+              style={{height:"17rem", width:"100%"}} // Adjust image styling as needed
               image={item.ImageUrl} // Update with your image URL field
             />
-            <CardContent style={{ flexGrow: 1 }}>
-              <Typography variant="h6">{item.name}</Typography>
-              <Typography variant="body2">Price: ₪{item.Price}</Typography>
-            </CardContent>
-            <Button
+            <CardContent style={{ flexGrow: 1 }} dir="rtl">
+            <Typography variant="h6">------------●------------</Typography>
+
+              <Typography variant="h6">{item.name} </Typography>
+              <Typography variant="body2" color={"#f8b904"} fontWeight={"bold"}>מחיר: ₪{item.Price}</Typography>
+              <Button
               variant="contained"
               color="primary"
+              sx={{width:"35%", backgroundColor:"#fcbc06", color:"black", fontWeight:"bold"}}
               onClick={() => addToCart(item)}
             >
-              Add to Cart
+              הוסף לסל
             </Button>
+            </CardContent>
           </Card>
+          </Box>
         </Grid>
       ))}
     </Grid>

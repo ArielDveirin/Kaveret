@@ -84,14 +84,10 @@ func EditItem(c *gin.Context) {
 		log.Fatal(parseErr)
 	}
 
-	var item models.Item
-
-	initializers.DB.First(&item)
-
-	//hash the password
+	fmt.Printf("id: %d , name: %s", body.ID, body.Name)
 
 	//result := initializers.DB.Save(&newItem)
-	result := initializers.DB.Model(&item).Where(&item).Updates(&body)
+	result := initializers.DB.Model(&body).Where("id = ?", body.ID).Updates(models.Item{Name: body.Name, Quantity: body.Quantity, Price: body.Price})
 	if result.Error != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "ITEM COULD NOT BE UPDATED",

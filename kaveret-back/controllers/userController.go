@@ -9,7 +9,6 @@ import (
 	"net/http"
 	"os"
 
-	"fmt"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -92,8 +91,6 @@ func Login(c *gin.Context) {
 
 	var user models.User
 	initializers.DB.First(&user, "username = ?", body.Username)
-
-	fmt.Println("User Found")
 
 	if user.ID == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{
