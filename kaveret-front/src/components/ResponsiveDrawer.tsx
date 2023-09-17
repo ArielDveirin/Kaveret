@@ -114,11 +114,43 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-start',
 }));
 
+interface Item {
+  ID?: number;
+  name: string;
+  Price: string;
+  Quantity: string;
+  ItemId: number;
+  ImageUrl: string;
+}
+
 export default function ResponsiveDrawer(props: { name: string, setName: (name: string) => void }) {
   const navigate = useNavigate();
 
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
+
+  const [items, setItems] = useState({});
+
+  useEffect(() => {
+    async function fetchItems() {
+      try {
+        const response = await fetch('http://localhost:3002/getItems', {
+          method: 'GET',
+          credentials: 'include',
+        });
+
+        if (response.ok) {
+          const responseBody = await response.text();
+         
+          setItems(responseBody);
+        }
+      } catch (error) {
+        console.error('Error fetching items:', error);
+      }
+    }
+
+    fetchItems();
+  }, []);
 
   const redirectPage = (prop: any) => {
     navigate('/' + prop);
@@ -212,7 +244,8 @@ export default function ResponsiveDrawer(props: { name: string, setName: (name: 
               inputProps={{ 'aria-label': 'search' }}
             />
             
-            
+          
+
           </Search>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, paddingRight:'65%', minHeight:"100%",width:"100%",}}>

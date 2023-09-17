@@ -71,6 +71,10 @@ func getItems(c *gin.Context) {
 	dbOperations.GetItems(c)
 }
 
+func getUsers(c *gin.Context) {
+	dbOperations.GetUsers(c)
+}
+
 func main() {
 	r := gin.Default()
 
@@ -92,6 +96,8 @@ func main() {
 	r.POST("/EditItem", checkAdmin, middleware.RequireAuth, postEditItem)
 
 	r.GET("/getItems", middleware.RequireAuth, getItems)
+
+	r.GET("/getUsers", middleware.RequireAuth, getUsers)
 
 	r.Run() // listen and serve on 0.0.0.0:8080
 }
