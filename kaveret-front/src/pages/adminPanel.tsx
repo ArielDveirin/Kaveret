@@ -288,8 +288,8 @@ const UserPanel: React.FC = () => {
               label="Permission"
               onChange={handleSelect}
             >
-              <MenuItem value={"Admin"}>Admin</MenuItem>
-              <MenuItem value={"Client"}>Client</MenuItem>
+              <MenuItem value={"admin"}>Admin</MenuItem>
+              <MenuItem value={"client"}>Client</MenuItem>
             </Select>
         </DialogContent>
         <DialogActions>
