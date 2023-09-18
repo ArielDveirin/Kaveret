@@ -35,10 +35,10 @@ func IsAdmin(c *gin.Context) bool {
 		var user models.User
 		initializers.DB.First(&user, claims["userid"])
 
-		if user.Permission == "client" {
-			return false
-		} else {
+		if user.Permission == "admin" {
 			return true
+		} else {
+			return false
 		}
 
 	} else {

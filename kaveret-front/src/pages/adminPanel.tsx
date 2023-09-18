@@ -14,6 +14,10 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  InputLabel,
+  Select,
+  MenuItem,
+  SelectChangeEvent,
 } from '@mui/material';
 
 interface User {
@@ -96,12 +100,13 @@ const UserPanel: React.FC = () => {
 
   const handleDeleteClick = async (user: User) => {
     try {
-      const response = await fetch('http://localhost:3002/deleteItem', {
+      const response = await fetch('http://localhost:3002/deleteUser', {
         method: 'POST',
         credentials: 'include',
         body: JSON.stringify({
             Name: user.Username,
             Price: user.Password,
+            ID: user.ID,
          }),
       });
 
@@ -127,7 +132,7 @@ const UserPanel: React.FC = () => {
 
   const handleSave = async () => {
     try {
-        const response = await fetch('http://localhost:3002/addUser', {
+        const response = await fetch('http://localhost:3002/register', {
           method: 'POST',
           credentials: 'include',
           body: JSON.stringify({
@@ -163,7 +168,7 @@ const UserPanel: React.FC = () => {
 
   const handleEdit = async (user: User) => {
     try {
-        const response = await fetch('http://localhost:3002/EditItem', {
+        const response = await fetch('http://localhost:3002/EditUser', {
           method: 'POST',
           credentials: 'include',
           body: JSON.stringify({
@@ -194,6 +199,10 @@ const UserPanel: React.FC = () => {
       }
     
     setOpenDialog(false);
+  };
+
+  const handleSelect = (event: SelectChangeEvent) => {
+    setPermission(event.target.value as string);
   };
 
   checkAdmin();
@@ -248,10 +257,10 @@ const UserPanel: React.FC = () => {
         <DialogTitle>Add User</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Fill in the details for the item.
+            Fill in the details for the User.
           </DialogContentText>
           <TextField
-            label="User Name"
+            label="Username"
             onChange={e => setUsername(e.target.value)}            
             fullWidth
             margin="normal"
@@ -264,12 +273,24 @@ const UserPanel: React.FC = () => {
             margin="normal"
           />
           <TextField
-            label="Amount in Stock"
+            label="Email"
             onChange={e => setEmail(e.target.value)}            
     
             fullWidth
             margin="normal"
           />
+
+          <InputLabel id="simple-select-label">Permission</InputLabel>
+            <Select
+              labelId="simple-select-label"
+              id="simple-select"
+              value={Permission}
+              label="Permission"
+              onChange={handleSelect}
+            >
+              <MenuItem value={"Admin"}>Admin</MenuItem>
+              <MenuItem value={"Client"}>Client</MenuItem>
+            </Select>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenDialog(false)} color="primary">

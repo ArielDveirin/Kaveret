@@ -3,6 +3,7 @@ package dbOperations
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"kaveretBack/initializers"
 	"kaveretBack/models"
@@ -14,7 +15,7 @@ import (
 )
 
 func AddItem(c *gin.Context) {
-	jsonData, err := ioutil.ReadAll(c.Request.Body)
+	jsonData, err := io.ReadAll(c.Request.Body)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -39,8 +40,6 @@ func AddItem(c *gin.Context) {
 		})
 		return
 	}
-
-	//hash the password
 
 	newItem := models.Item{Name: body.Name, Quantity: body.Quantity, Price: body.Price}
 

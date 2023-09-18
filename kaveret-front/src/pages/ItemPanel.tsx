@@ -21,21 +21,18 @@ interface Item {
   name: string;
   Price: string;
   Quantity: string;
-  ItemId: number;
 }
 
 const ItemPanel: React.FC = () => {
-const [items, setItems] = useState<Item[]>([]);
+  const [items, setItems] = useState<Item[]>([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [openEditDialog, setOpenEditDialog] = useState(false);
 
   const [selectedItem, setSelectedItem] = useState<Item | null>();
-  const [selectedItemId, setSelectedItemID] = useState<number | null>(null);
 
   const [ItemName, setItemName] = useState("")
   const [Price, setPrice] = useState("")
   const [Quantity, setQuantity] = useState("")
-  const [id, setID] = useState<number | null>(null);
 
   const [isAdmin, setIsAdmin] = useState(false);
   const [err, setErr] = useState('');

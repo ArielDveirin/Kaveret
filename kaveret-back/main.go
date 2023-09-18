@@ -99,5 +99,8 @@ func main() {
 
 	r.GET("/getUsers", middleware.RequireAuth, getUsers)
 
+	r.POST("/deleteUser", checkAdmin, middleware.RequireAuth, controllers.DeleteUser)
+	r.POST("/EditUser", checkAdmin, middleware.RequireAuth, controllers.EditUser)
+
 	r.Run() // listen and serve on 0.0.0.0:8080
 }
