@@ -12,6 +12,8 @@ import ResponsiveDrawer from './components/ResponsiveDrawer';
 
 function App() {
     const [name, setName] = useState('');
+
+
     
 
     useEffect(() => {
@@ -43,18 +45,23 @@ function App() {
             
         )();
     });
+    const [searchFilter, setSearchFilter] = useState("");
+
+  const handleSearchFilterChange = (newSearchFilter: string) => {
+    setSearchFilter(newSearchFilter);
+  };
 
     return (
         <div className="App">
 
             <BrowserRouter>
-                <ResponsiveDrawer name={name} setName={function (name: string): void {
+                <ResponsiveDrawer onSearchFilterChange={handleSearchFilterChange} name={name} setName={function (name: string): void {
                     throw new Error('Function not implemented.');
                 } }/>
                 
                 <Routes>
 
-                    <Route path="/"  element={<Home name={name}/>} />
+                    <Route path="/"  element={<Home searchWord={searchFilter}/>} />
                     
                     <Route path="/כניסה" element={<Login/>}/>
 

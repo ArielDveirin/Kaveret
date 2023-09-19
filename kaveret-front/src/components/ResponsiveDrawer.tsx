@@ -123,11 +123,26 @@ interface Item {
   ImageUrl: string;
 }
 
-export default function ResponsiveDrawer(props: { name: string, setName: (name: string) => void }) {
+interface ResponsiveDrawerProps {
+  onSearchFilterChange: (newSearchFilter: string) => void; // Define the prop
+  name: string;
+  setName: (name: string) => void;
+}
+
+export default function ResponsiveDrawer({
+  onSearchFilterChange, // Receive the prop
+  name,
+  setName,
+}: ResponsiveDrawerProps)  {
   const navigate = useNavigate();
 
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newSearchFilter = event.target.value;
+    onSearchFilterChange(newSearchFilter);
+  };
 
   const [items, setItems] = useState({});
 
@@ -242,12 +257,14 @@ export default function ResponsiveDrawer(props: { name: string, setName: (name: 
           <StyledInputBase
               placeholder="חיפוש..."
               inputProps={{ 'aria-label': 'search' }}
-            />
+              onChange={handleSearchChange}
+
+              />
             
           
 
-          </Search>
-
+        </Search>
+        
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, paddingRight:'65%', minHeight:"100%",width:"100%",}}>
 
           <div>
@@ -273,8 +290,8 @@ export default function ResponsiveDrawer(props: { name: string, setName: (name: 
                'aria-labelledby': 'basic-button',
              }}
            >
-            {props.name == "" && <><MenuItem onClick={handleLogin}>כניסה</MenuItem><MenuItem onClick={handleRegister}>הרשמה</MenuItem></>}
-            {props.name != "" && <><MenuItem onClick={handleLogout}>התנתקות</MenuItem></>}
+            {name == "" && <><MenuItem onClick={handleLogin}>כניסה</MenuItem><MenuItem onClick={handleRegister}>הרשמה</MenuItem></>}
+            {name != "" && <><MenuItem onClick={handleLogout}>התנתקות</MenuItem></>}
 
              
            </Menu>
@@ -352,3 +369,4 @@ export default function ResponsiveDrawer(props: { name: string, setName: (name: 
 function setAnchorElNav(arg0: null) {
   throw new Error('Function not implemented.');
 }
+

@@ -12,7 +12,7 @@ interface Item {
   ImageUrl: string;
 }
 
-const Home = (props: { name: string }) => {
+const Home = (props: {searchWord: string}) => {
 
   const [items, setItems] = useState<Item[]>([]);
 
@@ -44,7 +44,7 @@ const Home = (props: { name: string }) => {
 
   return (
     <Grid container spacing={2} paddingLeft={"5%"} paddingRight={"20%"}>
-      {items.map((item, index) => (
+      {items.filter(item => item.name.includes(props.searchWord)).map((item, index) => (
         <Grid item xs={14} sm={10} md={3} key={index} >
       <Box sx={{ boxShadow: 12}}>
       <Card style={{ height: '100%',width:"100%", display: 'flex', flexDirection: 'column'}}>
@@ -75,6 +75,7 @@ const Home = (props: { name: string }) => {
           </Box>
         </Grid>
       ))}
+      
     </Grid>
   );
 };
