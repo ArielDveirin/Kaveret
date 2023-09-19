@@ -29,7 +29,7 @@ interface User {
 
 }
 
-const UserPanel: React.FC = () => {
+const UserPanel = (props: {searchWord: string}) => {
     const [users, setUsers] = useState<User[]>([]);
     const [openDialog, setOpenDialog] = useState(false);
   const [openEditDialog, setOpenEditDialog] = useState(false);
@@ -44,7 +44,7 @@ const UserPanel: React.FC = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [err, setErr] = useState('');
 
-
+  
   async function checkAdmin() {
     try {
       const response = await fetch('http://localhost:3002/isAdmin', {
@@ -76,7 +76,6 @@ const UserPanel: React.FC = () => {
             const jsonItems = JSON.parse((responseBody.toString()));
 
             setUsers(jsonItems.items);
-            
           } else {
             // Handle the case where the API request is not successful
           }
@@ -225,7 +224,7 @@ const UserPanel: React.FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {users?.map((user) => (
+            {users.filter(user => user.Username.includes(props.searchWord)).map((user, index) => (
               <TableRow key={user.ID}>
                 <TableCell>{user.Username}</TableCell>
                 <TableCell>{user.Email}</TableCell>

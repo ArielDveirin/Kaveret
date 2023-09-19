@@ -67,11 +67,9 @@ function App() {
 
                     <Route path="/הרשמה" element={<Register />} />
 
-                    <Route path="/מנהל" element={<AdminPanel/>}/>
-
                     <Route path="/ניהול מוצרים" element={<ItemPanel searchWord={searchFilter}/>}/>
 
-                    <Route path="/ניהול משתמשים" element={<AdminPanel />}/>
+                    <Route path="/ניהול משתמשים" element={<AdminPanel searchWord={searchFilter}/>}/>
 
 
                 </Routes>
