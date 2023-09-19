@@ -69,9 +69,9 @@ function App() {
 
                     <Route path="/מנהל" element={<AdminPanel/>}/>
 
-                    <Route path="/ניהול מוצרים" element={<ItemPanel/>}/>
+                    <Route path="/ניהול מוצרים" element={<ItemPanel searchWord={searchFilter}/>}/>
 
-                    <Route path="/ניהול משתמשים" element={<AdminPanel/>}/>
+                    <Route path="/ניהול משתמשים" element={<AdminPanel />}/>
 
 
                 </Routes>

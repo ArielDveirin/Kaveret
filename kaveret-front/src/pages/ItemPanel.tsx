@@ -23,7 +23,9 @@ interface Item {
   Quantity: string;
 }
 
-const ItemPanel: React.FC = () => {
+
+
+const ItemPanel = (props: {searchWord: string}) => {
   const [items, setItems] = useState<Item[]>([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [openEditDialog, setOpenEditDialog] = useState(false);
@@ -213,7 +215,7 @@ const ItemPanel: React.FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {items.map((item) => (
+            {items.filter(item => item.name.includes(props.searchWord)).map((item, index) => (
               <TableRow key={item.ID}>
                 <TableCell>{item.ID}</TableCell>
                 <TableCell>{item.name}</TableCell>
