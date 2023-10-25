@@ -19,8 +19,7 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import Button from '@mui/material/Button';
-import SearchIcon from '@mui/icons-material/Search';
-
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 
 import PersonOutlineTwoToneIcon from '@mui/icons-material/PersonOutlineTwoTone';
 import { useNavigate } from 'react-router-dom';
@@ -28,6 +27,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import InputBase from '@mui/material/InputBase';
 import { Menu, MenuItem } from '@mui/material';
+import { useShoppingCart } from './ShoppingCartContext';
 
 const drawerWidth = 240;
 
@@ -138,6 +138,8 @@ export default function ResponsiveDrawer({
 
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
+
+  const {openCart} = useShoppingCart()
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newSearchFilter = event.target.value;
@@ -265,21 +267,26 @@ export default function ResponsiveDrawer({
 
         </Search>
         
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, paddingRight:'65%', minHeight:"100%",width:"100%",}}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, paddingRight:'75%', minHeight:"100%",width:"100%",}}>
 
           <div>
+          <Button onClick={openCart}>
+            <ShoppingCartOutlinedIcon sx={{color:"#f8c40c", outlineColor:"black", position:"relative", fontSize:"40px", paddingLeft:"0%", outline:"10px"}}/>
+          </Button>
 
            <Button
-           sx={{ color:'black', backgroundColor: 'white', fontSize:'20px', paddingLeft:"50rem" }}
+           sx={{ color:'black', backgroundColor: 'white', fontSize:'20px' }}
              id="basic-button"
              
-             onMouseOver={handleClick}
-             onClick={handleClose}
+             onClick={handleClick}
              
            >
+            
             <PersonOutlineTwoToneIcon sx={{color:"#f8c40c", outlineColor:"black", position:"relative", fontSize:"40px", paddingLeft:"10%", outline:"10px"}}/>
-             חשבון  
+               
            </Button>
+
+
            <Menu 
               dir='rtl'
              id="basic-menu"
@@ -296,6 +303,8 @@ export default function ResponsiveDrawer({
              
            </Menu>
          </div>
+
+         
          </Box>
           
 

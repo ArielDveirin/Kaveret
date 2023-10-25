@@ -9,6 +9,7 @@ import AdminPanel from './pages/adminPanel'
 import ItemPanel from './pages/ItemPanel'
 
 import ResponsiveDrawer from './components/ResponsiveDrawer';
+import { ShoppingCartProvider } from './components/ShoppingCartContext';
 
 function App() {
     const [name, setName] = useState('');
@@ -53,6 +54,7 @@ function App() {
 
     return (
         <div className="App">
+                <ShoppingCartProvider>
 
             <BrowserRouter>
                 <ResponsiveDrawer onSearchFilterChange={handleSearchFilterChange} name={name} setName={function (name: string): void {
@@ -74,6 +76,8 @@ function App() {
 
                 </Routes>
             </BrowserRouter>
+            </ShoppingCartProvider>
+
         </div>
     );
 }

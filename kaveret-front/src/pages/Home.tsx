@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, Typography, Button, Grid, CardMedia, Box } from '@mui/material';
 import { shadows } from '@mui/system';
+import { useShoppingCart } from '../components/ShoppingCartContext';
 
 
 interface Item {
-  ID?: number;
+  ID: number;
   name: string;
   Price: string;
   Quantity: string;
@@ -14,7 +15,10 @@ interface Item {
 
 const Home = (props: {searchWord: string}) => {
 
+  const {getItemQuantity, addToCart, removeFromCart} = useShoppingCart()
+
   const [items, setItems] = useState<Item[]>([]);
+  var quantity = 1
 
   useEffect(() => {
     async function fetchItems() {
@@ -37,10 +41,7 @@ const Home = (props: {searchWord: string}) => {
     fetchItems();
   }, []);
 
-  const addToCart = (item: Item) => {
-    // Implement your cart logic here
-    console.log('Added to cart:', item);
-  };
+  
 
   return (
     <Grid container spacing={2} paddingLeft={"5%"} paddingRight={"20%"}>
@@ -62,14 +63,19 @@ const Home = (props: {searchWord: string}) => {
 
               <Typography variant="body1">{item.name} </Typography>
               <Typography variant="body2" color={"#f8b904"} fontWeight={"bold"}>מחיר: ₪{item.Price}</Typography>
+              
+
               <Button 
               variant="contained"
               color="primary"
               sx={{width:"50%", backgroundColor:"#fcbc06", color:"black", fontWeight:"bold"}}
-              onClick={() => addToCart(item)}
+              onClick={() => addToCart(item.ID)}
+      
             >
               הוסף לסל
             </Button>
+
+
             </CardContent>
           </Card>
           </Box>
