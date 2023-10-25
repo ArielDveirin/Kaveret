@@ -2,57 +2,44 @@ import { Offcanvas, Stack } from "react-bootstrap"
 import { useShoppingCart } from "./ShoppingCartContext"
 import { useEffect, useState } from "react";
 import { CartItem } from "./CartItem";
+import { Button, Drawer } from "@mui/material";
 
 interface Item {
     ID?: number;
     name: string;
     Price: string;
     Quantity: string;
-  }
+    ImageUrl: string;
+}
 
 type ShoppingCartProps = {
   isOpen: boolean
+  items: Item[]
 }
 
-export function ShoppingCart({ isOpen }: ShoppingCartProps) {
-    const [items, setItems] = useState<Item[]>([]);
+export function ShoppingCart({ isOpen, items }: ShoppingCartProps) {
     const { closeCart, cartItems } = useShoppingCart()
 
-  useEffect(() => {
-    (
-      async () => {
-        try {
-          const response = await fetch('http://localhost:3002/getItems', {
-            method: 'GET',
-            credentials: 'include',
-          });
   
-          if (response.ok) {
-            const responseBody = await response.text(); // Get the response text
-            
-            const jsonItems = JSON.parse((responseBody.toString()));
-
-            setItems(jsonItems.items);
-            
-          } else {
-            // Handle the case where the API request is not successful
-          }
-        } catch (error) {
-          // Handle any other errors that may occur during the API request
-        }
-      }
-    )();
-  }, []);
-
   return (
-    <Offcanvas show={isOpen} onHide={closeCart} placement="end">
-      <Offcanvas.Header closeButton>
-        <Offcanvas.Title>Cart</Offcanvas.Title>
-      </Offcanvas.Header>
-      <Offcanvas.Body>
+    <Drawer open={isOpen} dir="rtl" onBackdropClick={closeCart}
+        PaperProps={{
+            sx: {
+                alignItems:"center",
+                width:350,
+                borderRadius:0
+            }
+        }}>
+
+        המוצרים שלי
+        <Button variant="outlined" color="error" style={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px'}} onClick={() => {closeCart();}} >
+            X
+        </Button>
+
+
         <Stack gap={3}>
           {cartItems.map(item => ( 
-            <CartItem key={item.id} {...item} />
+            <CartItem items={items} key={item.id} {...item}  />
           ))}
           <div className="ms-auto fw-bold fs-5">
             Total{" "}
@@ -64,7 +51,6 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
             }
           </div>
         </Stack>
-      </Offcanvas.Body>
-    </Offcanvas>
+    </Drawer>
   )
 }

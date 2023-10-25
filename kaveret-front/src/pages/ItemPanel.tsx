@@ -21,6 +21,7 @@ interface Item {
   name: string;
   Price: string;
   Quantity: string;
+  ImageUrl: string;
 }
 
 
@@ -33,6 +34,7 @@ const ItemPanel = (props: {searchWord: string}) => {
   const [selectedItem, setSelectedItem] = useState<Item | null>();
 
   const [ItemName, setItemName] = useState("")
+  const [ImageUrl, setImageUrl] = useState("")
   const [Price, setPrice] = useState("")
   const [Quantity, setQuantity] = useState("")
 
@@ -49,6 +51,7 @@ const ItemPanel = (props: {searchWord: string}) => {
   
       if (response.ok) {
         setIsAdmin(true)
+
       }
     } 
     catch(error)
@@ -135,6 +138,7 @@ const ItemPanel = (props: {searchWord: string}) => {
               Name: ItemName,
               Quantity: Quantity,
               Price: Price,
+              ImageUrl: ImageUrl
            }),
         });
   
@@ -170,6 +174,7 @@ const ItemPanel = (props: {searchWord: string}) => {
               Quantity: Quantity,
               Price: Price,
               ID: item.ID,
+              ImageUrl: ImageUrl
            }),
         });
   
@@ -195,6 +200,7 @@ const ItemPanel = (props: {searchWord: string}) => {
   };
 
   checkAdmin();
+
 
   if (isAdmin)
   {
@@ -270,6 +276,13 @@ const ItemPanel = (props: {searchWord: string}) => {
             fullWidth
             margin="normal"
           />
+          <TextField
+            label="ImageUrl"
+            onChange={e => setImageUrl(e.target.value)}            
+    
+            fullWidth
+            margin="normal"
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenDialog(false)} color="primary">
@@ -306,6 +319,13 @@ const ItemPanel = (props: {searchWord: string}) => {
             label={"Current Quantity: "+selectedItem?.Quantity}
             onChange={e => setQuantity(e.target.value)}            
             type="number"
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="ImageUrl"
+            onChange={e => setImageUrl(e.target.value)}            
+    
             fullWidth
             margin="normal"
           />

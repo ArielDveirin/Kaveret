@@ -41,7 +41,7 @@ func AddItem(c *gin.Context) {
 		return
 	}
 
-	newItem := models.Item{Name: body.Name, Quantity: body.Quantity, Price: body.Price}
+	newItem := models.Item{Name: body.Name, Quantity: body.Quantity, Price: body.Price, ImageUrl: body.ImageUrl}
 
 	result := initializers.DB.Create(&newItem)
 	if result.Error != nil {
@@ -95,7 +95,7 @@ func EditItem(c *gin.Context) {
 	fmt.Printf("id: %d , name: %s", body.ID, body.Name)
 
 	//result := initializers.DB.Save(&newItem)
-	result := initializers.DB.Model(&body).Where("id = ?", body.ID).Updates(models.Item{Name: body.Name, Quantity: body.Quantity, Price: body.Price})
+	result := initializers.DB.Model(&body).Where("id = ?", body.ID).Updates(models.Item{Name: body.Name, Quantity: body.Quantity, Price: body.Price, ImageUrl: body.ImageUrl})
 	if result.Error != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "ITEM COULD NOT BE UPDATED",

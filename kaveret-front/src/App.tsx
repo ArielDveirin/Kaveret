@@ -11,17 +11,28 @@ import ItemPanel from './pages/ItemPanel'
 import ResponsiveDrawer from './components/ResponsiveDrawer';
 import { ShoppingCartProvider } from './components/ShoppingCartContext';
 
+interface Item {
+  ID?: number;
+  name: string;
+  Price: string;
+  Quantity: string;
+  ImageUrl: string;
+}
+
 function App() {
     const [name, setName] = useState('');
+    const [items, setItems] = useState<Item[]>([]);
 
-
+    const [didValidate, setDidValidate] = useState(false);
     
-
+    
     useEffect(() => {
         (
+          
             async () => {
 
-
+              if (!didValidate)
+             { 
                 const response = await fetch('http://localhost:3002/validate', {
                     method: "GET",
                     credentials: 'include',
@@ -32,20 +43,43 @@ function App() {
                     return response.json();
                   })
                   .then(data => {
-                    // Update the state with the received JSON data
                     setName(data.message.Username);
                   })
                   .catch(error => {
                     console.error('Error fetching data:', error);
                   });
+                  setDidValidate(true);
+
 
                   
-                
+                    try {
+                      const response = await fetch('http://localhost:3002/getItems', {
+                        method: 'GET',
+                        credentials: 'include',
+                      });
+              
+                      if (response.ok) {
+                        const responseBody = await response.text(); // Get the response text
+                        
+                        const jsonItems = JSON.parse((responseBody.toString()));
+            
+                        setItems(jsonItems.items);
+                        
+                      } else {
+                        // Handle the case where the API request is not successful
+                      }
+                    } catch (error) {
+                      // Handle any other errors that may occur during the API request
+                    }
+                  
+                  
+                  }
             }
             
             
         )();
     });
+  
     const [searchFilter, setSearchFilter] = useState("");
 
   const handleSearchFilterChange = (newSearchFilter: string) => {
@@ -54,7 +88,7 @@ function App() {
 
     return (
         <div className="App">
-                <ShoppingCartProvider>
+                <ShoppingCartProvider items = {items}>
 
             <BrowserRouter>
                 <ResponsiveDrawer onSearchFilterChange={handleSearchFilterChange} name={name} setName={function (name: string): void {

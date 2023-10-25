@@ -3,9 +3,17 @@ import { createContext } from "react";
 import { ReactNode } from "react";
 import { ShoppingCart } from "./ShoppingCart";
 
+interface Item {
+    ID?: number;
+    name: string;
+    Price: string;
+    Quantity: string;
+    ImageUrl: string;
+}
 
 type ShoppingCartProviderProps = {
     children: ReactNode
+    items: Item[]
 }
 type CartItem = {
     id: number
@@ -31,7 +39,7 @@ export function useShoppingCart() {
 }
 
 
-export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
+export function ShoppingCartProvider({ children, items}: ShoppingCartProviderProps) {
     const [isOpen, setIsOpen] = useState(false)
 
     const [cartItems, setCartItems] = useState<CartItem[]>([])
@@ -83,7 +91,7 @@ export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
     return (
         <ShoppingCartContext.Provider value={{openCart, closeCart, getItemQuantity, addToCart, removeFromCart, cartItems}}>
             {children}
-            <ShoppingCart isOpen={isOpen}/>
+            <ShoppingCart isOpen={isOpen} items={items}/>
         </ShoppingCartContext.Provider>
     )
 }

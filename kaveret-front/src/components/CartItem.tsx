@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 type CartItemProps = {
   id: number
   quantity: number
+  items:Item[]
 }
 
 interface Item {
@@ -12,12 +13,12 @@ interface Item {
     name: string;
     Price: string;
     Quantity: string;
+    ImageUrl: string;
   }
 
 
-export function CartItem({ id, quantity }: CartItemProps) {
+export function CartItem({ id, quantity, items }: CartItemProps) {
   const { removeFromCart } = useShoppingCart()
-  const [items, setItems] = useState<Item[]>([]);
   const item = items.find(i => i.ID === id)
   if (item == null) return null
 
@@ -31,7 +32,7 @@ export function CartItem({ id, quantity }: CartItemProps) {
   return (
     <Stack direction="horizontal" gap={2} className="d-flex align-items-center">
       <img
-        src={item.name}
+        src={item.ImageUrl}
         style={{ width: "125px", height: "75px", objectFit: "cover" }}
       />
       <div className="me-auto">
