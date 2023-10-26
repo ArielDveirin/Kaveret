@@ -1,6 +1,9 @@
-import { Button, Stack } from "react-bootstrap"
+import { Button } from "react-bootstrap"
+import Stack from '@mui/material/Stack';
+
 import { useShoppingCart } from "./ShoppingCartContext"
 import { useEffect, useState } from "react"
+import { Divider } from "@mui/material";
 
 type CartItemProps = {
   id: number
@@ -30,10 +33,16 @@ export function CartItem({ id, quantity, items }: CartItemProps) {
   }
 
   return (
-    <Stack direction="horizontal" gap={2} className="d-flex align-items-center">
+    <Stack direction="column" gap={1}
+     className="d-flex align-items-center" 
+    justifyContent="center"
+    display={"flex"}
+
+    useFlexGap flexWrap="wrap">
+
       <img
         src={item.ImageUrl}
-        style={{ width: "125px", height: "75px", objectFit: "cover" }}
+        style={{ height:"7rem", width:"9rem", alignSelf:"center", marginTop:"2rem"}}
       />
       <div className="me-auto">
         <div>
@@ -45,10 +54,12 @@ export function CartItem({ id, quantity, items }: CartItemProps) {
           )}
         </div>
         <div className="text-muted" style={{ fontSize: ".75rem" }}>
-          {item.Price}
+          מחיר יחיד: {item.Price}
         </div>
       </div>
-      <div> {Number(item.Price) * quantity}</div>
+      <div style={{ fontSize: ".75rem" }}>
+        כמות בעגלה: {quantity}
+      </div>
       <Button
         variant="outline-danger"
         size="sm"

@@ -26,14 +26,14 @@ export function ShoppingCart({ isOpen, items }: ShoppingCartProps) {
         PaperProps={{
             sx: {
                 alignItems:"center",
-                width:350,
+                width:400,
                 borderRadius:0
             }
         }}>
 
         המוצרים שלי
         <Button variant="outlined" color="error" style={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px'}} onClick={() => {closeCart();}} >
-            X
+            -
         </Button>
 
 
@@ -41,8 +41,9 @@ export function ShoppingCart({ isOpen, items }: ShoppingCartProps) {
           {cartItems.map(item => ( 
             <CartItem items={items} key={item.id} {...item}  />
           ))}
-          <div className="ms-auto fw-bold fs-5">
-            Total{" "}
+          
+          <div className="ms-auto fw-bold fs-5" style={{marginTop:"2rem"}}>
+            סה"כ לתשלום: {" "}
             {
               cartItems.reduce((total, cartItem) => {
                 const item = items.find(i => i.ID === cartItem.id)
