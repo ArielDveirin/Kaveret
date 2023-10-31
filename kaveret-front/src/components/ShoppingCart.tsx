@@ -2,7 +2,9 @@ import { Offcanvas, Stack } from "react-bootstrap"
 import { useShoppingCart } from "./ShoppingCartContext"
 import { useEffect, useState } from "react";
 import { CartItem } from "./CartItem";
-import { Button, Drawer } from "@mui/material";
+import { Button, Drawer, Typography } from "@mui/material";
+import { close, url } from "inspector";
+import cartImg from '../images/cart.png';
 
 interface Item {
     ID?: number;
@@ -30,11 +32,12 @@ export function ShoppingCart({ isOpen, items }: ShoppingCartProps) {
                 borderRadius:0
             }
         }}>
+          <div  onClick={() => {closeCart();}} 
+          style={{ width:"100%", height:"7rem"}}>
+            <img src={cartImg} height={"100%"} width={"100%"}></img>
 
-        המוצרים שלי
-        <Button variant="outlined" color="error" style={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px'}} onClick={() => {closeCart();}} >
-            -
-        </Button>
+       
+        </div>
 
 
         <Stack gap={3}>
