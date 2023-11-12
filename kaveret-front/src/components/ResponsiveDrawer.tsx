@@ -27,6 +27,10 @@ import InputBase from '@mui/material/InputBase';
 import { Menu, MenuItem } from '@mui/material';
 import { useShoppingCart } from './ShoppingCartContext';
 
+import BannerImg from '../images/Banner.png';
+import YoterImg from '../images/yoter.png';
+
+
 const drawerWidth = 240;
 
 const Search = styled('div')(({ theme }) => ({
@@ -316,9 +320,15 @@ export default function ResponsiveDrawer({
             onClick={handleDrawerOpen}
             sx={{ ...(open && { display: 'none' }) }}
           >
+
             <MenuIcon />
           </IconButton>
+             
+
+
         </Toolbar>
+        <img src={BannerImg} />
+
       </AppBar>
       <Main open={open}>
         <DrawerHeader />
@@ -366,7 +376,11 @@ export default function ResponsiveDrawer({
                 </ListItemButton>
               </ListItem>
             ))}
-          </List></>
+          </List>  
+          <a href="https://www.yoter.co.il/" style={{marginTop:"178%"}}>
+                  <img src={YoterImg} style={{width:"100%"}}/>
+          </a>
+            </>
         }
       </Drawer>
     </Box>

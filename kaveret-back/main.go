@@ -75,6 +75,10 @@ func getUsers(c *gin.Context) {
 	dbOperations.GetUsers(c)
 }
 
+func buyItems(c *gin.Context) {
+	dbOperations.BuyItems(c)
+}
+
 func main() {
 	r := gin.Default()
 
@@ -101,6 +105,8 @@ func main() {
 
 	r.POST("/deleteUser", checkAdmin, middleware.RequireAuth, controllers.DeleteUser)
 	r.POST("/EditUser", checkAdmin, middleware.RequireAuth, controllers.EditUser)
+
+	r.POST("/BuyItems", middleware.RequireAuth, buyItems)
 
 	r.Run() // listen and serve on 0.0.0.0:8080
 }

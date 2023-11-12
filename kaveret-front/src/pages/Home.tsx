@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, Typography, Button, Grid, CardMedia, Box, Divider } from '@mui/material';
+import { Card, CardContent, Typography, Button, Grid, CardMedia, Box } from '@mui/material';
+import { Divider } from 'semantic-ui-react'
+
 import { shadows } from '@mui/system';
 import { useShoppingCart } from '../components/ShoppingCartContext';
 
@@ -10,8 +12,11 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 
+
+
 import ExploreOutlinedIcon from '@mui/icons-material/ExploreOutlined';
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
+
 
 interface Item {
   ID: number;
@@ -53,7 +58,7 @@ const Home = (props: {searchWord: string}) => {
  
 
   return (
-    <Grid container spacing={2} paddingLeft={"5%"} paddingRight={"20%"}>
+    <Grid container spacing={2} paddingLeft={"5%"} paddingRight={"20%"} marginTop={"5rem"}>
        
        <Swiper
         autoplay={{
@@ -97,7 +102,9 @@ const Home = (props: {searchWord: string}) => {
         </SwiperSlide>
 
       </Swiper>
+
       <Swiper
+      
        style={{
         
         'height': '25rem',
@@ -138,10 +145,8 @@ const Home = (props: {searchWord: string}) => {
         </SwiperSlide>
 
       </Swiper>
-      <Divider />
+      <Divider textAlign="left" style={{width:"100%", height:"0.01rem", backgroundColor:"#f2c30c", marginTop:"5rem"}} ></Divider>
 
-
-      <Divider />
 
       
 <Grid item xs={22} md={26} textAlign={"right"}>
@@ -154,10 +159,10 @@ const Home = (props: {searchWord: string}) => {
       </Grid>
 
       <Swiper
-              navigation={true}
-        slidesPerView={4}
+        navigation={true}
+        slidesPerView={6}
         spaceBetween={30}
-        
+        style={{borderRadius:"10rem", borderColor:"black"}}
         modules={[Pagination, Navigation]}
         className="mySwiper"
       >
@@ -165,7 +170,7 @@ const Home = (props: {searchWord: string}) => {
         
       <SwiperSlide>
       <Box sx={{ boxShadow: 12}}>
-      <Card style={{ height: '100%',width:"100%", display: 'flex', flexDirection: 'column'}}>
+      <Card style={{marginTop:"1rem", marginBottom:"1rem", height: '100%',width:"100%", display: 'flex', flexDirection: 'column'}}>
             <CardMedia
               component="img"
               alt={item.name}
@@ -199,8 +204,8 @@ const Home = (props: {searchWord: string}) => {
           </SwiperSlide>
       ))}
       </Swiper>
-      <Divider />
-      <Divider />
+      
+      <Divider textAlign="left" style={{width:"100%", height:"0.01rem", backgroundColor:"#f2c30c", marginTop:"5rem"}} ></Divider>
 
 
       <Grid item xs={22} md={26} textAlign={"right"}>
@@ -214,8 +219,9 @@ const Home = (props: {searchWord: string}) => {
 
       <Swiper
               navigation={true}
-        
-        slidesPerView={4}
+              style={{borderRadius:"10rem", borderColor:"black"}}
+
+        slidesPerView={6}
         spaceBetween={30}
         
         modules={[Pagination, Navigation]}
@@ -259,8 +265,7 @@ const Home = (props: {searchWord: string}) => {
           </SwiperSlide>
       ))}
       </Swiper>
-      <Divider />
-      <Divider />
+      <Divider textAlign="left" style={{width:"100%", height:"0.01rem", backgroundColor:"#f2c30c", marginTop:"5rem"}} ></Divider>
 
     </Grid>
   );

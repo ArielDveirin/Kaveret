@@ -140,3 +140,34 @@ func DeleteItem(c *gin.Context) {
 	})
 
 }
+
+type BoughtItem struct {
+	Id       int
+	Quantity int
+}
+
+type cart struct {
+	CartItems []BoughtItem
+}
+
+func BuyItems(c *gin.Context) {
+	jsonData, err := ioutil.ReadAll(c.Request.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var cartItems cart
+
+	parseErr := json.Unmarshal((jsonData), &cartItems)
+
+	fmt.Printf(string(jsonData) + "\n")
+
+	fmt.Println(cartItems)
+
+	if parseErr != nil {
+
+		// if error is not nil
+		// print error
+		log.Fatal(parseErr)
+	}
+}

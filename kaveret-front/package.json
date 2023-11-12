@@ -26,6 +26,7 @@
     "react-spring-lightbox": "^1.8.0",
     "react-swipe": "^6.0.4",
     "recharts": "^2.7.3",
+    "semantic-ui-react": "^2.1.4",
     "styled-components": "^6.1.0",
     "swipe-js-iso": "^2.1.5",
     "swiper": "^11.0.3",

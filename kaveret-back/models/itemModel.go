@@ -8,4 +8,5 @@ type Item struct {
 	Price    string
 	Quantity string
 	ImageUrl string
+	IsOnSale string
 }
