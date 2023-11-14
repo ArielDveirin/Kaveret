@@ -88,7 +88,7 @@ function App() {
 
     return (
         <div className="App">
-                <ShoppingCartProvider items = {items}>
+                <ShoppingCartProvider items = {items} username={name}>
 
             <BrowserRouter>
                 <ResponsiveDrawer onSearchFilterChange={handleSearchFilterChange} name={name} setName={function (name: string): void {

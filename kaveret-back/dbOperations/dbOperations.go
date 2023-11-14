@@ -8,6 +8,7 @@ import (
 	"kaveretBack/initializers"
 	"kaveretBack/models"
 	"log"
+	"strconv"
 
 	"net/http"
 
@@ -144,6 +145,7 @@ func DeleteItem(c *gin.Context) {
 type BoughtItem struct {
 	Id       int
 	Quantity int
+	Username string
 }
 
 type cart struct {
@@ -159,8 +161,49 @@ func BuyItems(c *gin.Context) {
 	var cartItems cart
 
 	parseErr := json.Unmarshal((jsonData), &cartItems)
+	var body models.Item
 
-	fmt.Printf(string(jsonData) + "\n")
+	for i, s := range cartItems.CartItems {
+		result := initializers.DB.Where("id = ?", s.Id).First(&body)
+
+		if result.Error != nil {
+			fmt.Println(result.Error)
+			fmt.Printf("\n\nID:%d QUANTITY:%d USERNAME: %s\n\n", s.Id, s.Quantity, s.Username)
+
+			c.JSON(http.StatusBadRequest, gin.H{
+				"message": "ITEM COULD NOT BE UPDATED",
+			})
+			return
+		}
+
+		inStockQuantity, err := strconv.Atoi(body.Quantity)
+
+		if inStockQuantity < s.Quantity || err != nil {
+			fmt.Println("Item not in stock: ", i, "currently in stock: ", s.Id)
+			c.JSON(http.StatusBadRequest, gin.H{
+				"message": "NOT ENOUGH IN STOCK",
+			})
+			return
+		} else {
+			//if there's enough in the stock, we substract the neeeded amount
+			var recipt models.Receipt
+
+			//the item added to the reciept
+			recipt.ItemList = append(recipt.ItemList, body)
+
+			if totalAsFloat, err := strconv.ParseFloat(body.Price, 32); err == nil {
+				recipt.Total = recipt.Total + float32(totalAsFloat)
+			}
+
+			recipt.Username = s.Username
+
+			fmt.Printf("nName: %s, Price: %s, Quantity: %d\n", body.Name, body.Price, s.Quantity)
+			body = models.Item{}
+		}
+
+	}
+
+	//fmt.Printf(string(jsonData) + "\n")
 
 	fmt.Println(cartItems)
 

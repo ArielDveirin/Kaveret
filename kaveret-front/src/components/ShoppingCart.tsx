@@ -17,14 +17,16 @@ interface Item {
 type ShoppingCartProps = {
   isOpen: boolean
   items: Item[]
+  username:string
 }
 
 type CartItem = {
   id: number
   quantity: number
+  username: string
 }
 
-async function buy(cartItems: CartItem[]) {
+async function buy(cartItems: CartItem[], username: string) {
     try {
       const response = await fetch('http://localhost:3002/BuyItems', {
         method: 'POST',
@@ -47,8 +49,8 @@ async function buy(cartItems: CartItem[]) {
 }
 
 
-export function ShoppingCart({ isOpen, items }: ShoppingCartProps) {
-    const { closeCart, cartItems } = useShoppingCart()
+export function ShoppingCart({ isOpen, items, username}: ShoppingCartProps) {
+    const { closeCart, cartItems } = useShoppingCart(username)
 
   
   return (
@@ -80,11 +82,13 @@ export function ShoppingCart({ isOpen, items }: ShoppingCartProps) {
                 const item = items.find(i => i.ID === cartItem.id)
                 return total + (Number(item?.Price) || 0) * cartItem.quantity
               }, 0)
+              
             }
+
           </div>
         </Stack>
 
-        <Button variant="contained" style={{marginTop:"2rem", marginBottom:"2rem", backgroundColor:"#f8c40c", color:"black", fontSize:"1rem", fontWeight:"bold"}}  onClick={() => buy(cartItems)}>הזמן</Button>
+        <Button variant="contained" style={{marginTop:"2rem", marginBottom:"2rem", backgroundColor:"#f8c40c", color:"black", fontSize:"1rem", fontWeight:"bold"}}  onClick={() => buy(cartItems, username)}>הזמן</Button>
 
     </Drawer>
   )

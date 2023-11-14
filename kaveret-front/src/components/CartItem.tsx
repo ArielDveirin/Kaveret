@@ -21,7 +21,7 @@ interface Item {
 
 
 export function CartItem({ id, quantity, items }: CartItemProps) {
-  const { removeFromCart } = useShoppingCart()
+  const { removeFromCart } = useShoppingCart("")
   const item = items.find(i => i.ID === id)
   if (item == null) return null
 

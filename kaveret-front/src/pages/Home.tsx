@@ -29,7 +29,7 @@ interface Item {
 
 const Home = (props: {searchWord: string}) => {
 
-  const {getItemQuantity, addToCart, removeFromCart} = useShoppingCart()
+  const {getItemQuantity, addToCart, removeFromCart} = useShoppingCart("")
 
   const [items, setItems] = useState<Item[]>([]);
   var quantity = 1

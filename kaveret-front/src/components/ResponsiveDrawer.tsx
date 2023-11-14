@@ -141,7 +141,7 @@ export default function ResponsiveDrawer({
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
 
-  const {openCart} = useShoppingCart()
+  const {openCart} = useShoppingCart(name)
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newSearchFilter = event.target.value;
