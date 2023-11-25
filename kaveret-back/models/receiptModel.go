@@ -8,5 +8,5 @@ type Receipt struct {
 	gorm.Model
 	Username string
 	Total    float32
-	ItemList []Item `json:"item" gorm:"foreignKey:Name"`
+	ItemList []Item `gorm:"foreignKey:Name"` // Define the relationship
 }

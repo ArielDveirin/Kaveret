@@ -159,17 +159,19 @@ func BuyItems(c *gin.Context) {
 	}
 
 	var cartItems cart
+	var recipt models.Receipt
 
 	parseErr := json.Unmarshal((jsonData), &cartItems)
-	var body models.Item
 
+	fmt.Println("\n\n\n****************************************")
 	for i, s := range cartItems.CartItems {
-		result := initializers.DB.Where("id = ?", s.Id).First(&body)
-		var recipt models.Receipt
+		var body models.Item
+
+		result := initializers.DB.Unscoped().First(&body, s.Id)
 
 		if result.Error != nil {
 			fmt.Println(result.Error)
-			fmt.Printf("\n\nID:%d QUANTITY:%d USERNAME: %s\n\n", s.Id, s.Quantity, s.Username)
+			fmt.Printf("ID: %d\n", s.Id)
 
 			c.JSON(http.StatusBadRequest, gin.H{
 				"message": "ITEM COULD NOT BE UPDATED",
@@ -197,10 +199,8 @@ func BuyItems(c *gin.Context) {
 
 			recipt.Username = s.Username
 
-			fmt.Printf("\n\n******************\nReciept Item added -> Id: %d, Price: %s, Quantity: %d\n", body.ID, body.Price, s.Quantity)
+			fmt.Printf("Reciept Item added -> Id: %s, Price: %s, Quantity: %d\n", body.Name, body.Price, s.Quantity)
 		}
-
-		result = initializers.DB.Create(&recipt)
 
 		if result.Error != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
@@ -215,9 +215,8 @@ func BuyItems(c *gin.Context) {
 
 	}
 
-	//fmt.Printf(string(jsonData) + "\n")
-
-	fmt.Println(cartItems)
+	fmt.Printf("\nUser: %s\nTotal: %.2f\n", recipt.Username, recipt.Total)
+	fmt.Println("****************************************\n\n\n")
 
 	if parseErr != nil {
 

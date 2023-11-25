@@ -300,7 +300,7 @@ export default function ResponsiveDrawer({
              }}
            >
             {name == "" && <><MenuItem onClick={handleLogin}>כניסה</MenuItem><MenuItem onClick={handleRegister}>הרשמה</MenuItem></>}
-            {name != "" && <><MenuItem onClick={handleLogout}>התנתקות</MenuItem></>}
+            {name != "" && <><MenuItem onClick={handleLogout}>חשבוניות</MenuItem><MenuItem onClick={handleLogout}>התנתקות</MenuItem></>}
 
              
            </Menu>
