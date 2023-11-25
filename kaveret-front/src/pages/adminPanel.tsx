@@ -209,7 +209,7 @@ const UserPanel = (props: {searchWord: string}) => {
   if (isAdmin)
   {
   return (
-    <div>
+    <div style={{paddingTop:"4rem"}}>
       <Button variant="contained" color="primary" onClick={handleAddClick}>
         Add Item
       </Button>

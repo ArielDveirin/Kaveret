@@ -165,6 +165,7 @@ func BuyItems(c *gin.Context) {
 
 	for i, s := range cartItems.CartItems {
 		result := initializers.DB.Where("id = ?", s.Id).First(&body)
+		var recipt models.Receipt
 
 		if result.Error != nil {
 			fmt.Println(result.Error)
@@ -186,7 +187,6 @@ func BuyItems(c *gin.Context) {
 			return
 		} else {
 			//if there's enough in the stock, we substract the neeeded amount
-			var recipt models.Receipt
 
 			//the item added to the reciept
 			recipt.ItemList = append(recipt.ItemList, body)
@@ -197,9 +197,21 @@ func BuyItems(c *gin.Context) {
 
 			recipt.Username = s.Username
 
-			fmt.Printf("nName: %s, Price: %s, Quantity: %d\n", body.Name, body.Price, s.Quantity)
-			body = models.Item{}
+			fmt.Printf("\n\n******************\nReciept Item added -> Id: %d, Price: %s, Quantity: %d\n", body.ID, body.Price, s.Quantity)
 		}
+
+		result = initializers.DB.Create(&recipt)
+
+		if result.Error != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"message": "Error adding reciept to DB",
+			})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"message": "Reciept was Created succesfuly!",
+		})
 
 	}
 
