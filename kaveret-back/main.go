@@ -99,7 +99,7 @@ func main() {
 	r.POST("/deleteItem", checkAdmin, middleware.RequireAuth, postDeleteItem)
 	r.POST("/EditItem", checkAdmin, middleware.RequireAuth, postEditItem)
 
-	r.GET("/getItems", middleware.RequireAuth, getItems)
+	r.GET("/getItems", getItems)
 
 	r.GET("/getUsers", middleware.RequireAuth, getUsers)
 
