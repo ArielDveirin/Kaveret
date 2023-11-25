@@ -163,6 +163,13 @@ func BuyItems(c *gin.Context) {
 
 	parseErr := json.Unmarshal((jsonData), &cartItems)
 
+	if parseErr != nil {
+
+		// if error is not nil
+		// print error
+		log.Fatal(parseErr)
+	}
+
 	fmt.Println("\n\n\n****************************************")
 	for i, s := range cartItems.CartItems {
 		var body models.Item
@@ -218,10 +225,5 @@ func BuyItems(c *gin.Context) {
 	fmt.Printf("\nUser: %s\nTotal: %.2f\n", recipt.Username, recipt.Total)
 	fmt.Println("****************************************\n\n\n")
 
-	if parseErr != nil {
-
-		// if error is not nil
-		// print error
-		log.Fatal(parseErr)
-	}
+	initializers.DB.Create(&recipt)
 }
