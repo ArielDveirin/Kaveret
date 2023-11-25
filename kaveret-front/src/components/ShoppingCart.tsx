@@ -39,6 +39,7 @@ async function buy(cartItems: CartItem[], username: string) {
       if (response.ok) {
         const responseBody = await response.text();
         alert("ההזמנה נשלחה!");
+        window.location.reload();
       }
       else if (!response.ok) {
         alert("ההזמנה לא בוצעה :(");
@@ -50,7 +51,7 @@ async function buy(cartItems: CartItem[], username: string) {
 
 
 export function ShoppingCart({ isOpen, items, username}: ShoppingCartProps) {
-    const { closeCart, cartItems } = useShoppingCart(username)
+    let { closeCart, cartItems } = useShoppingCart(username)
 
   
   return (
@@ -89,7 +90,6 @@ export function ShoppingCart({ isOpen, items, username}: ShoppingCartProps) {
         </Stack>
 
         <Button variant="contained" style={{marginTop:"2rem", marginBottom:"2rem", backgroundColor:"#f8c40c", color:"black", fontSize:"1rem", fontWeight:"bold"}}  onClick={() => buy(cartItems, username)}>הזמן</Button>
-
     </Drawer>
   )
 }

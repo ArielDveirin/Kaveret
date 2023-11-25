@@ -221,7 +221,7 @@ const ItemPanel = (props: {searchWord: string}) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {items.filter(item => item.name.includes(props.searchWord)).map((item, index) => (
+            {items.filter(item =>  item.name.includes(props.searchWord)).map((item, index) => (
               <TableRow key={item.ID}>
                 <TableCell>{item.ID}</TableCell>
                 <TableCell>{item.name}</TableCell>

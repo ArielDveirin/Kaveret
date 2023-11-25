@@ -29,7 +29,8 @@ type ShoppingCartContext = {
     getItemQuantity: (id: number) => number
     addToCart: (id: number) => void
     removeFromCart: (id: number) => void
-
+    clearCart: () => void
+    
     cartItems: CartItem[]
 }
 
@@ -53,7 +54,6 @@ export function ShoppingCartProvider({ children, items, username}: ShoppingCartP
 
     const openCart = ()  => setIsOpen(true)
     const closeCart = () =>  setIsOpen(false)
-
     function addToCart(id: number) {
         setCartItems(currItems => {
             if (currItems.find(item => item.id === id) == null) {
@@ -87,11 +87,13 @@ export function ShoppingCartProvider({ children, items, username}: ShoppingCartP
         }  
             
         
-    
+        function clearCart() {
+            setCartItems([]);
+            }  
 
 
     return (
-        <ShoppingCartContext.Provider value={{openCart, closeCart, getItemQuantity, addToCart, removeFromCart, cartItems}}>
+        <ShoppingCartContext.Provider value={{openCart, closeCart, getItemQuantity, addToCart, removeFromCart,clearCart, cartItems}}>
             {children}
             <ShoppingCart isOpen={isOpen} items={items} username={username}/>
         </ShoppingCartContext.Provider>

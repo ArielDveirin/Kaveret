@@ -207,6 +207,14 @@ func BuyItems(c *gin.Context) {
 			recipt.Username = s.Username
 
 			fmt.Printf("Reciept Item added -> Id: %s, Price: %s, Quantity: %d\n", body.Name, body.Price, s.Quantity)
+
+			//update new quantity in stock :
+			updatedQuantity, err := strconv.Atoi(body.Quantity)
+			if err == nil {
+				updatedQuantity -= s.Quantity
+				initializers.DB.Model(&body).Updates(models.Item{Quantity: fmt.Sprintf("%d", updatedQuantity)})
+			}
+
 		}
 
 		if result.Error != nil {
@@ -223,7 +231,13 @@ func BuyItems(c *gin.Context) {
 	}
 
 	fmt.Printf("\nUser: %s\nTotal: %.2f\n", recipt.Username, recipt.Total)
-	fmt.Println("****************************************\n\n\n")
+	fmt.Println("****************************************")
 
-	initializers.DB.Create(&recipt)
+	dbResult := initializers.DB.Create(&recipt)
+
+	if dbResult.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Reciept could not be created in DB",
+		})
+	}
 }

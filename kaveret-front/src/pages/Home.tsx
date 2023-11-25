@@ -20,7 +20,7 @@ import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 
 interface Item {
   ID: number;
-  name: string;
+  Name: string;
   Price: string;
   Quantity: string;
   ItemId: number;
@@ -166,14 +166,15 @@ const Home = (props: {searchWord: string}) => {
         modules={[Pagination, Navigation]}
         className="mySwiper"
       >
-        {items.filter(item => item.name.includes(props.searchWord)).map((item, index) => (
+        {items.filter(item => item.Name.includes(props.searchWord)).map((item, index) => (
+
         
       <SwiperSlide>
       <Box sx={{ boxShadow: 12}}>
       <Card style={{marginTop:"1rem", marginBottom:"1rem", height: '100%',width:"100%", display: 'flex', flexDirection: 'column'}}>
             <CardMedia
               component="img"
-              alt={item.name}
+              alt={item.Name}
               height="140"
             
               style={{height:"10rem", width:"10rem", alignSelf:"center"}} // Adjust image styling as needed
@@ -183,7 +184,7 @@ const Home = (props: {searchWord: string}) => {
             <CardContent style={{ flexGrow: 1 }} dir="rtl">
             <Typography variant="h6">------------●------------</Typography>
 
-              <Typography variant="body1">{item.name} </Typography>
+              <Typography variant="body1">{item.Name} </Typography>
               <Typography variant="body2" color={"#f8b904"} fontWeight={"bold"}>מחיר: ₪{item.Price}</Typography>
               
 
@@ -227,14 +228,14 @@ const Home = (props: {searchWord: string}) => {
         modules={[Pagination, Navigation]}
         className="mySwiper"
       >
-        {items.filter(item => item.name.includes(props.searchWord)).map((item, index) => (
+        {items.filter(item => (item.Name).includes(props.searchWord)).map((item, index) => (
         
       <SwiperSlide>
       <Box sx={{ boxShadow: 12}}>
       <Card style={{ height: '100%',width:"100%", display: 'flex', flexDirection: 'column', marginBottom:"1Rem"}}>
             <CardMedia
               component="img"
-              alt={item.name}
+              alt={item.Name}
               height="140"
             
               style={{height:"10rem", width:"10rem", alignSelf:"center"}} // Adjust image styling as needed
@@ -244,7 +245,7 @@ const Home = (props: {searchWord: string}) => {
             <CardContent style={{ flexGrow: 1 }} dir="rtl">
             <Typography variant="h6">------------●------------</Typography>
 
-              <Typography variant="body1">{item.name} </Typography>
+              <Typography variant="body1">{item.Name} </Typography>
               <Typography variant="body2" color={"#f8b904"} fontWeight={"bold"}>מחיר: ₪{item.Price}</Typography>
               
 
