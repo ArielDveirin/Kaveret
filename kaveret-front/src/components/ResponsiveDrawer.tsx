@@ -20,7 +20,7 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import Button from '@mui/material/Button';
 import SearchIcon from '@mui/icons-material/Search';
-
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 
 import PersonOutlineTwoToneIcon from '@mui/icons-material/PersonOutlineTwoTone';
 import { useNavigate } from 'react-router-dom';
@@ -260,57 +260,77 @@ export default function ResponsiveDrawer({
               onChange={handleSearchChange}
 
               />
-            
-          
-
         </Search>
-        
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, paddingRight:'65%', minHeight:"100%",width:"100%",}}>
-
-          <div>
-
-           <Button
-           sx={{ color:'black', backgroundColor: 'white', fontSize:'20px', paddingLeft:"50rem" }}
-             id="basic-button"
-             
-             onMouseOver={handleClick}
-             onClick={handleClose}
-             
-           >
-            <PersonOutlineTwoToneIcon sx={{color:"#f8c40c", outlineColor:"black", position:"relative", fontSize:"40px", paddingLeft:"10%", outline:"10px"}}/>
-             חשבון  
-           </Button>
-           <Menu 
-              dir='rtl'
-             id="basic-menu"
-             anchorEl={anchorEl}
-             open={opened}
-             onClose={handleClose}
-             MenuListProps={{
-               'aria-labelledby': 'basic-button',
-             }}
-           >
-            {name == "" && <><MenuItem onClick={handleLogin}>כניסה</MenuItem><MenuItem onClick={handleRegister}>הרשמה</MenuItem></>}
-            {name != "" && <><MenuItem onClick={handleLogout}>התנתקות</MenuItem></>}
-
-             
-           </Menu>
-         </div>
-         </Box>
           
+        <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, minHeight: "100%", width: "100%", paddingRight:"35rem " }}>
+  <div style={{ display: 'flex' }}>
+    <div style={{ flex: 1 }}>
+      <Button
+        sx={{ color: 'black', backgroundColor: 'white', fontSize: '20px', paddingLeft: "1rem" }}
+        id="basic-button"
+        onMouseOver={handleClick}
+        onClick={handleClose}
+      >
+        <ShoppingCartOutlinedIcon sx={{ color: "#f8c40c", outlineColor: "black", position: "relative", fontSize: "40px", paddingLeft: "0%", outline: "10px" }} />
+        עגלה
+      </Button>
+      <Menu
+        dir='rtl'
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={opened}
+        onClose={handleClose}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
+        }}
+      >
+        {name == "" && <><MenuItem onClick={handleLogin}>כניסה</MenuItem><MenuItem onClick={handleRegister}>הרשמה</MenuItem></>}
+        {name != "" && <><MenuItem onClick={handleLogout}>התנתקות</MenuItem><MenuItem></MenuItem></>}
+      </Menu>
+    </div>
+    <div style={{ flex: 1 }}>
+      <Button
+        sx={{ color: 'black', backgroundColor: 'white', fontSize: '20px', paddingLeft: "1rem" }}  
+        id="basic-button"
+        onMouseOver={handleClick}
+        onClick={handleClose}
+      >
+        <PersonOutlineTwoToneIcon sx={{ color: "#f8c40c", outlineColor: "black", position: "relative", fontSize: "40px", paddingLeft: "0%", outline: "10px" }} />
+        חשבון
+      </Button>
+      <Menu
+        dir='rtl'
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={opened}
+        onClose={handleClose}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
+        }}
+      >
+        {name == "" && <><MenuItem onClick={handleLogin}>כניסה</MenuItem><MenuItem onClick={handleRegister}>הרשמה</MenuItem></>}
+        {name != "" && <><MenuItem onClick={handleLogout}>התנתקות</MenuItem></>}
+      </Menu>
+    </div>
+  </div>
+</Box>
 
+
+             
+         
+
+             
+          
+        
 
           
 
           <IconButton
-            color="inherit"
             aria-label="open drawer"
-            edge="end"
-            onClick={handleDrawerOpen}
-            sx={{ ...(open && { display: 'none' }) }}
           >
-            <MenuIcon />
           </IconButton>
+
+          
         </Toolbar>
       </AppBar>
       <Main open={open}>
@@ -329,11 +349,9 @@ export default function ResponsiveDrawer({
         anchor="right"
         open={open}
       >
-        <DrawerHeader>
         <Link to="/">
             <img src={require('../images/kaveretLogo.png')} width={'100%'}/>
         </Link>
-        </DrawerHeader>
         <Divider />
         <List dir="rtl">
           {['מבצעים', 'מוצרים'].map((text, index) => (
