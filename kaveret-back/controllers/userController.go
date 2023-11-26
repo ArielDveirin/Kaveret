@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"io"
 	"io/ioutil"
 	"kaveretBack/initializers"
 	"kaveretBack/models"
@@ -9,7 +10,6 @@ import (
 	"net/http"
 	"os"
 
-	"fmt"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -57,13 +57,15 @@ func Signup(c *gin.Context) {
 	}
 
 	// create user record
-
-	newuser := models.User{Username: body.Username, Email: body.Email, Password: string(hash), Permission: "client"}
+	if body.Permission == "" {
+		body.Permission = "client"
+	}
+	newuser := models.User{Username: body.Username, Email: body.Email, Password: string(hash), Permission: body.Permission}
 
 	result := initializers.DB.Create(&newuser)
 	if result.Error != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "uSER COULD NOT BE CREATED",
+			"message": "USER COULD NOT BE CREATED",
 		})
 		return
 	}
@@ -74,7 +76,7 @@ func Signup(c *gin.Context) {
 }
 
 func Login(c *gin.Context) {
-	jsonData, err := ioutil.ReadAll(c.Request.Body)
+	jsonData, err := io.ReadAll(c.Request.Body)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -93,11 +95,9 @@ func Login(c *gin.Context) {
 	var user models.User
 	initializers.DB.First(&user, "username = ?", body.Username)
 
-	fmt.Println("User Found")
-
 	if user.ID == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "Username or Password incorrect",
+			"message": "Username incorrect",
 		})
 		return
 	}
@@ -152,6 +152,69 @@ func Logout(c *gin.Context) {
 	}
 	c.SetSameSite(http.SameSiteLaxMode)
 	c.SetCookie("Auth", tokenString, 3600*24*30, "", "", false, true)
+
+}
+
+func EditUser(c *gin.Context) {
+	jsonData, err := ioutil.ReadAll(c.Request.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var body models.User
+
+	parseErr := json.Unmarshal(jsonData, &body)
+
+	if parseErr != nil {
+
+		// if error is not nil
+		// print error
+		log.Fatal(parseErr)
+	}
+
+	//result := initializers.DB.Save(&newItem)
+	result := initializers.DB.Model(&body).Where("id = ?", body.ID).Updates(models.User{Username: body.Username, Password: body.Password, Email: body.Email})
+	if result.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "USER COULD NOT BE UPDATED",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "USER UPDATED",
+	})
+
+}
+
+func DeleteUser(c *gin.Context) {
+	jsonData, err := io.ReadAll(c.Request.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var body models.User
+
+	parseErr := json.Unmarshal(jsonData, &body)
+	if parseErr != nil {
+
+		// if error is not nil
+		// print error
+		log.Fatal(parseErr)
+	}
+
+	//result := initializers.DB.Save(&newItem)
+	result := initializers.DB.Unscoped().Where(&body).Delete(&body)
+	if result.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "USER COULD NOT BE DELETED",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "ITEM DELETED",
+	})
 
 }
 

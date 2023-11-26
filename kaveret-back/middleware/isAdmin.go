@@ -21,7 +21,7 @@ func IsAdmin(c *gin.Context) bool {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		// Don't forget to validate the alg is what you expect:
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+			return nil, fmt.Errorf("unexpected signing method")
 		}
 
 		// hmacSampleSecret is a []byte containing your secret, e.g. []byte("my_secret_key")
@@ -35,10 +35,10 @@ func IsAdmin(c *gin.Context) bool {
 		var user models.User
 		initializers.DB.First(&user, claims["userid"])
 
-		if user.Permission == "client" {
-			return false
-		} else {
+		if user.Permission == "admin" {
 			return true
+		} else {
+			return false
 		}
 
 	} else {

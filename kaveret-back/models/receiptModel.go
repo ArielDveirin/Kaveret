@@ -1,11 +1,12 @@
 package models
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+)
 
 type Receipt struct {
 	gorm.Model
-	receiptID     string `gorm:"unique"`
-	username      string
-	total         float32
-	amountInStock int
+	Username string
+	Total    float32
+	ItemList []Item `gorm:"foreignKey:id"` // Define the relationship
 }

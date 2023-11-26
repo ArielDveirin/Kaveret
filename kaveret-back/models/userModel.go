@@ -6,6 +6,6 @@ type User struct {
 	gorm.Model
 	Username   string
 	Password   string
-	Email      string `json:"email" gorm:"unique"`
+	Email      string
 	Permission string
 }

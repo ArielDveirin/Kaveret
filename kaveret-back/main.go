@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"kaveretBack/controllers"
+	"kaveretBack/dbOperations"
 	"kaveretBack/initializers"
 	"kaveretBack/middleware"
 	"net/http"
@@ -54,6 +55,34 @@ func LogoutAction(c *gin.Context) {
 	controllers.Logout(c)
 }
 
+func postAddItem(c *gin.Context) {
+	dbOperations.AddItem(c)
+}
+
+func postEditItem(c *gin.Context) {
+	dbOperations.EditItem(c)
+}
+
+func postDeleteItem(c *gin.Context) {
+	dbOperations.DeleteItem(c)
+}
+
+func getItems(c *gin.Context) {
+	dbOperations.GetItems(c)
+}
+
+func getUsers(c *gin.Context) {
+	dbOperations.GetUsers(c)
+}
+
+func buyItems(c *gin.Context) {
+	dbOperations.BuyItems(c)
+}
+
+func getReceipts(c *gin.Context) {
+	dbOperations.GetReceipts(c)
+}
+
 func main() {
 	r := gin.Default()
 
@@ -69,6 +98,20 @@ func main() {
 
 	r.GET("/validate", middleware.RequireAuth, controllers.Validate)
 	r.GET("/isAdmin", checkAdmin)
+
+	r.POST("/addItem", checkAdmin, middleware.RequireAuth, postAddItem)
+	r.POST("/deleteItem", checkAdmin, middleware.RequireAuth, postDeleteItem)
+	r.POST("/EditItem", checkAdmin, middleware.RequireAuth, postEditItem)
+
+	r.GET("/getItems", getItems)
+	r.GET("/getReceipts", getReceipts)
+
+	r.GET("/getUsers", middleware.RequireAuth, getUsers)
+
+	r.POST("/deleteUser", checkAdmin, middleware.RequireAuth, controllers.DeleteUser)
+	r.POST("/EditUser", checkAdmin, middleware.RequireAuth, controllers.EditUser)
+
+	r.POST("/BuyItems", middleware.RequireAuth, buyItems)
 
 	r.Run() // listen and serve on 0.0.0.0:8080
 }
