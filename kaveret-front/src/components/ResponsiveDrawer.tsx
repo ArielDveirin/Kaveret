@@ -198,6 +198,11 @@ export default function ResponsiveDrawer({
     navigate('/כניסה');
   };
 
+  const handleReceipts = () => {
+    setAnchorEl(null);
+    navigate('/קבלות');
+  }
+
   const handleLogout = async () => {
     try {
       const response = await fetch('http://localhost:3002/logout', {
@@ -300,7 +305,7 @@ export default function ResponsiveDrawer({
              }}
            >
             {name == "" && <><MenuItem onClick={handleLogin}>כניסה</MenuItem><MenuItem onClick={handleRegister}>הרשמה</MenuItem></>}
-            {name != "" && <><MenuItem onClick={handleLogout}>חשבוניות</MenuItem><MenuItem onClick={handleLogout}>התנתקות</MenuItem></>}
+            {name != "" && <><MenuItem onClick={handleReceipts}>חשבוניות</MenuItem><MenuItem onClick={handleLogout}>התנתקות</MenuItem></>}
 
              
            </Menu>

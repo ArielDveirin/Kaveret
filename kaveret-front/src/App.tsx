@@ -10,6 +10,7 @@ import ItemPanel from './pages/ItemPanel'
 
 import ResponsiveDrawer from './components/ResponsiveDrawer';
 import { ShoppingCartProvider } from './components/ShoppingCartContext';
+import ReceiptShowcase from './pages/reciepts';
 
 interface Item {
   ID?: number;
@@ -107,6 +108,7 @@ function App() {
 
                     <Route path="/ניהול משתמשים" element={<AdminPanel searchWord={searchFilter}/>}/>
 
+                    <Route path="/קבלות" element={<ReceiptShowcase username={name}/>}/>
 
                 </Routes>
             </BrowserRouter>

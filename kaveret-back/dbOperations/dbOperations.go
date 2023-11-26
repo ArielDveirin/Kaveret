@@ -76,6 +76,15 @@ func GetUsers(c *gin.Context) {
 	})
 }
 
+func GetReceipts(c *gin.Context) {
+	var receipts []models.Receipt
+	initializers.DB.Find(&receipts)
+
+	c.JSON(http.StatusOK, gin.H{
+		"items": receipts,
+	})
+}
+
 func EditItem(c *gin.Context) {
 	jsonData, err := ioutil.ReadAll(c.Request.Body)
 	if err != nil {

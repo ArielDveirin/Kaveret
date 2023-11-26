@@ -79,6 +79,10 @@ func buyItems(c *gin.Context) {
 	dbOperations.BuyItems(c)
 }
 
+func getReceipts(c *gin.Context) {
+	dbOperations.GetReceipts(c)
+}
+
 func main() {
 	r := gin.Default()
 
@@ -100,6 +104,7 @@ func main() {
 	r.POST("/EditItem", checkAdmin, middleware.RequireAuth, postEditItem)
 
 	r.GET("/getItems", getItems)
+	r.GET("/getReceipts", getReceipts)
 
 	r.GET("/getUsers", middleware.RequireAuth, getUsers)
 

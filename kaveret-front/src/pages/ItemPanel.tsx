@@ -18,7 +18,7 @@ import {
 
 interface Item {
   ID?: number;
-  name: string;
+  Name: string;
   Price: string;
   Quantity: string;
   ImageUrl: string;
@@ -102,7 +102,7 @@ const ItemPanel = (props: {searchWord: string}) => {
         method: 'POST',
         credentials: 'include',
         body: JSON.stringify({
-            Name: item.name,
+            Name: item.Name,
             Quantity: item.Quantity,
             Price: item.Price,
             Item_Id: item.ID,
@@ -221,10 +221,10 @@ const ItemPanel = (props: {searchWord: string}) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {items.filter(item =>  item.name.includes(props.searchWord)).map((item, index) => (
+            {items.filter(item =>  item.Name.includes(props.searchWord)).map((item, index) => (
               <TableRow key={item.ID}>
                 <TableCell>{item.ID}</TableCell>
-                <TableCell>{item.name}</TableCell>
+                <TableCell>{item.Name}</TableCell>
                 <TableCell>{item.Price}</TableCell>
                 <TableCell>{item.Quantity}</TableCell>
                 <TableCell>
@@ -301,7 +301,7 @@ const ItemPanel = (props: {searchWord: string}) => {
             Fill in the details for the item.
           </DialogContentText>
           <TextField
-            label={"Current Name: "+selectedItem?.name}
+            label={"Current Name: "+selectedItem?.Name}
             onChange={e => setItemName(e.target.value)}   
          
             fullWidth
