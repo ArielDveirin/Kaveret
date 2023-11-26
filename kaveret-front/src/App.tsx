@@ -32,7 +32,8 @@ function App() {
           
             async () => {
 
-              
+              if (name == "")
+              {
                 const response = await fetch('http://localhost:3002/validate', {
                     method: "GET",
                     credentials: 'include',
@@ -74,7 +75,7 @@ function App() {
                   
                   
             }
-            
+          }
             
         )();
     });
