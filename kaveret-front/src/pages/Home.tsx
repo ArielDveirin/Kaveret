@@ -27,7 +27,7 @@ interface Item {
   ImageUrl: string;
 }
 
-const Home = (props: {searchWord: string}) => {
+const Home = (props: {searchWord: string, name: string}) => {
 
   const {getItemQuantity, addToCart, removeFromCart} = useShoppingCart("")
 

@@ -8,7 +8,7 @@ import cartImg from '../images/cart.png';
 
 interface Item {
     ID?: number;
-    name: string;
+    Name: string;
     Price: string;
     Quantity: string;
     ImageUrl: string;

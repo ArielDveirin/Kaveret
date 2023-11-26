@@ -14,7 +14,7 @@ import ReceiptShowcase from './pages/reciepts';
 
 interface Item {
   ID?: number;
-  name: string;
+  Name: string;
   Price: string;
   Quantity: string;
   ImageUrl: string;
@@ -32,8 +32,7 @@ function App() {
           
             async () => {
 
-              if (!didValidate)
-             { 
+              
                 const response = await fetch('http://localhost:3002/validate', {
                     method: "GET",
                     credentials: 'include',
@@ -49,7 +48,6 @@ function App() {
                   .catch(error => {
                     console.error('Error fetching data:', error);
                   });
-                  setDidValidate(true);
 
 
                   
@@ -74,7 +72,7 @@ function App() {
                     }
                   
                   
-                  }
+                  
             }
             
             
@@ -92,13 +90,13 @@ function App() {
                 <ShoppingCartProvider items = {items} username={name}>
 
             <BrowserRouter>
-                <ResponsiveDrawer onSearchFilterChange={handleSearchFilterChange} name={name} setName={function (name: string): void {
+                <ResponsiveDrawer onSearchFilterChange={handleSearchFilterChange} username={name} setName={function (name: string): void {
                     throw new Error('Function not implemented.');
                 } }/>
                 
                 <Routes>
 
-                    <Route path="/"  element={<Home searchWord={searchFilter}/>} />
+                    <Route path="/"  element={<Home searchWord={searchFilter} name={name}/>} />
                     
                     <Route path="/כניסה" element={<Login/>}/>
 
@@ -108,7 +106,7 @@ function App() {
 
                     <Route path="/ניהול משתמשים" element={<AdminPanel searchWord={searchFilter}/>}/>
 
-                    <Route path="/קבלות" element={<ReceiptShowcase username={name}/>}/>
+                    <Route path="/קבלות" element={<ReceiptShowcase username={name} items={items}/>}/>
 
                 </Routes>
             </BrowserRouter>
