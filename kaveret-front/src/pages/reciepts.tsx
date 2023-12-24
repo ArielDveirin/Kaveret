@@ -1,93 +1,153 @@
 import React, { useEffect, useState } from 'react';
-
+import {
+  Card,
+  CardContent,
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+  makeStyles,
+  Divider,
+} from '@material-ui/core';
 
 interface Receipt {
-    ID?: number;
-    Username: string;
-    Total: number;
-    ItemIdList: number[];
+  ID?: number;
+  Username: string;
+  Total: number;
+  ItemIdList: number[];
 }
 
 interface Item {
-    ID?: number;
-    Name: string;
-    Price: string;
-    Quantity: string;
-    ImageUrl: string;
-  }
+  ID?: number;
+  Name: string;
+  Price: string;
+  Quantity: string;
+  ImageUrl: string;
+}
 
-const ReceiptShowcase = (props: {username: string, items: Item[]}) => {
-    const [receipts, setReceipts] = useState<Receipt[]>([]);
-    const [continueFilter, setContinueFilter] = useState(false);
-    const [items, setItems] = useState<Item[]>([]);
+const useStyles = makeStyles((theme) => ({
+  card: {
+    margin: '1rem',
+    padding: '1rem',
+    boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)',
+    transition: '0.3s',
+    borderRadius: '8px',
+    '&:hover': {
+      boxShadow: '0 8px 16px 0 rgba(0,0,0,0.2)',
+    },
+  },
+  listItem: {
+    borderBottom: '1px solid #ccc',
+  },
+}));
 
-    useEffect(() => {
-        async function fetchReceipts() {
-            try {
+const ReceiptShowcase = (props: { username: string; items: Item[] }) => {
+  const classes = useStyles();
+  const [receipts, setReceipts] = useState<Receipt[]>([]);
+  const [items, setItems] = useState<Item[]>([]);
 
-                const response = await fetch('http://localhost:3002/getReceipts', {
-                    method: 'GET',
-                    credentials: 'include',
-                });
+  useEffect(() => {
+    async function fetchReceipts() {
+        try {
 
-                if (response.ok) {
-                    const responseBody = await response.text(); // Get the response text
-            
-                    const jsonItems = JSON.parse((responseBody.toString()));
+            const response = await fetch('http://localhost:3002/getReceipts', {
+                method: 'GET',
+                credentials: 'include',
+            });
 
-                    setReceipts(jsonItems.items);
-                    alert(responseBody.toString());
-                }
-            } catch (error) {
-                console.error('Error fetching Receipts:', error);
+            if (response.ok) {
+                const responseBody = await response.text(); // Get the response text
+        
+                const jsonItems = JSON.parse((responseBody.toString()));
+
+                setReceipts(jsonItems.items);
+                //alert(responseBody.toString());
             }
-
+        } catch (error) {
+            console.error('Error fetching Receipts:', error);
         }
 
-        fetchReceipts();
-    }, [props.username]);
+    }
 
-    if (continueFilter) {
-        return (
-            <div>
-                
-                    <div>
-                        {receipts != null && receipts.filter(receipt =>  receipt.Username.includes(props.username)).map((receipt, index) => (
-                            <div key={receipt.ID}>
-                                <h3>Receipt ID: {receipt.ID}</h3>
-                                <p>Total Paid: ${receipt.Total}</p>
-                                <ul>
-                                {receipt.ItemIdList.map(itemId => {
-                                const foundItem = items.find(item => item.ID === itemId);
-                                if (foundItem) {
-                                return (
-                                    <li key={foundItem.ID}>
-                                    <p>Name: {foundItem.Name}</p>
-                                    <p>Price: ${foundItem.Price}</p>
-                                    <p>Quantity: {foundItem.Quantity}</p>
-                                    </li>
-                                );
-                                }
-                                return null; // If item with given ID is not found
-                            })}
-                                </ul>
-                            </div>
-                        ))}
-                    </div>
-            </div>
-                                    
-        );
-                                    }
-                                    else {
-                                        return (
-                                        <div>
-                                            <p>
-                                                no reciepts
-                                            </p>
-                                        </div>);
-                                    }
-   
-    
+    fetchReceipts();
+
+}, [props.username]);
+useEffect(() => {
+    async function fetchItems() {
+      try {
+        const response = await fetch('http://localhost:3002/getItems', {
+          method: 'GET',
+          credentials: 'include',
+        });
+
+        if (response.ok) {
+          const responseBody = await response.text();
+          const jsonItems = JSON.parse(responseBody.toString());
+          setItems(jsonItems.items);
+        }
+      } catch (error) {
+        console.error('Error fetching items:', error);
+      }
+    }
+
+    fetchItems();
+  }, []);
+
+ return (
+  <div style={{ display: 'flex', flexWrap: 'wrap', paddingTop:"5rem" }}>
+    {receipts.length > 0 ? (
+      receipts
+        .filter((receipt) => receipt.Username.includes(props.username))
+        .map((receipt, index) => (
+          <Card key={index} className={classes.card}>
+            <CardContent>
+              <Typography variant="h5" component="h2">
+                Receipt ID: {receipt.ID}
+              </Typography>
+              <Typography color="textSecondary">
+                Total Paid: ${receipt.Total}
+              </Typography>
+              <List>
+                {receipt.ItemIdList.map((itemId, itemIndex) => {
+                  const foundItem = items.find((item) => item.ID === itemId);
+                  if (foundItem) {
+                    return (
+                      <React.Fragment key={foundItem.ID}>
+                        <ListItemText
+                              primary={foundItem.Name}
+                              secondary={
+                                <>
+                                  <Typography variant="body2">
+                                    Price: ${foundItem.Price}
+                                  </Typography>
+                                  <Typography variant="body2">
+                                    Quantity: {foundItem.Quantity}
+                                  </Typography>
+                                </>
+                              }
+                            />
+                        {itemIndex !== receipt.ItemIdList.length - 1 && (
+                          <Divider />
+                        )}
+                      </React.Fragment>
+                    );
+                  }
+                  return null; // If item with given ID is not found
+                })}
+              </List>
+              <Typography variant="h6">
+                  Total: ${receipt.Total.toFixed(2)} {/* Display receipt total */}
+                </Typography>
+            </CardContent>
+          </Card>
+        ))
+    ) : (
+      <div>
+        <p>No receipts</p>
+      </div>
+    )}
+  </div>
+);
 };
 
 export default ReceiptShowcase;
