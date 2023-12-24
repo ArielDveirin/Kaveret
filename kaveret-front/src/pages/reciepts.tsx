@@ -15,6 +15,8 @@ interface Receipt {
   Username: string;
   Total: number;
   ItemIdList: number[];
+  QuantityList: string[];
+
 }
 
 interface Item {
@@ -104,12 +106,10 @@ useEffect(() => {
               <Typography variant="h5" component="h2">
                 Receipt ID: {receipt.ID}
               </Typography>
-              <Typography color="textSecondary">
-                Total Paid: ${receipt.Total}
-              </Typography>
               <List>
                 {receipt.ItemIdList.map((itemId, itemIndex) => {
                   const foundItem = items.find((item) => item.ID === itemId);
+                  const quantity = receipt.QuantityList[(itemIndex)]
                   if (foundItem) {
                     return (
                       <React.Fragment key={foundItem.ID}>
@@ -121,7 +121,7 @@ useEffect(() => {
                                     Price: ${foundItem.Price}
                                   </Typography>
                                   <Typography variant="body2">
-                                    Quantity: {foundItem.Quantity}
+                                    Quantity: {quantity}
                                   </Typography>
                                 </>
                               }

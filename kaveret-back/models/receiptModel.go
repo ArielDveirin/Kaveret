@@ -7,7 +7,8 @@ import (
 
 type Receipt struct {
 	gorm.Model
-	Username   string
-	Total      float32
-	ItemIdList pq.Int64Array `gorm:"type:integer[]"`
+	Username     string
+	Total        float32
+	ItemIdList   pq.Int64Array  `gorm:"type:integer[]"`
+	QuantityList pq.StringArray `gorm:"type:integer[]"`
 }

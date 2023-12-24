@@ -209,9 +209,13 @@ func BuyItems(c *gin.Context) {
 
 			//the item added to the reciept
 			recipt.ItemIdList = append(recipt.ItemIdList, int64(body.ID))
+			quantityAsString := strconv.Itoa(s.Quantity)
+			recipt.QuantityList = append(recipt.QuantityList, quantityAsString)
 
-			if totalAsFloat, err := strconv.ParseFloat(body.Price, 32); err == nil {
-				recipt.Total = recipt.Total + float32(totalAsFloat)
+			for i := 1; i <= s.Quantity; i++ {
+				if totalAsFloat, err := strconv.ParseFloat(body.Price, 32); err == nil {
+					recipt.Total = recipt.Total + float32(totalAsFloat)
+				}
 			}
 
 			recipt.Username = s.Username
