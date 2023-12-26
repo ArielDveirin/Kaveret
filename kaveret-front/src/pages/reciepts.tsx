@@ -15,7 +15,7 @@ interface Receipt {
   Username: string;
   Total: number;
   ItemIdList: number[];
-  QuantityList: string[];
+  QuantityList: number[];
 
 }
 
@@ -105,6 +105,9 @@ useEffect(() => {
             <CardContent>
               <Typography variant="h5" component="h2">
                 Receipt ID: {receipt.ID}
+              </Typography>
+              <Typography color="textSecondary">
+                Total Paid: ${receipt.Total}
               </Typography>
               <List>
                 {receipt.ItemIdList.map((itemId, itemIndex) => {

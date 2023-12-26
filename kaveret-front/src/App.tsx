@@ -11,6 +11,11 @@ import ItemPanel from './pages/ItemPanel'
 import ResponsiveDrawer from './components/ResponsiveDrawer';
 import { ShoppingCartProvider } from './components/ShoppingCartContext';
 import ReceiptShowcase from './pages/reciepts';
+import Sweets from './pages/Sweets';
+import Salty from './pages/Salty';
+import Drinks from './pages/Drinks';
+import Dairy from './pages/Dairy';
+import Search from './pages/Search';
 
 interface Item {
   ID?: number;
@@ -97,17 +102,19 @@ function App() {
                 
                 <Routes>
 
-                    <Route path="/"  element={<Home searchWord={searchFilter} name={name}/>} />
+                    <Route path="/"  element={<Home name={name}/>} />
                     
-                    <Route path="/כניסה" element={<Login/>}/>
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/item management" element={<ItemPanel searchWord={searchFilter} />} />
+                  <Route path="/user management" element={<AdminPanel searchWord={searchFilter} />} />
+                  <Route path="/receipts" element={<ReceiptShowcase username={name} items={items} />} />
+                  <Route path="/sweets" element={<Sweets/>} />
+                  <Route path="/salty" element={<Salty/>} />
+                  <Route path="/drinks" element={<Drinks/>} />
+                  <Route path="/dairy" element={<Dairy/>} />
+                  <Route path="/Search" element={<Search/>} />
 
-                    <Route path="/הרשמה" element={<Register />} />
-
-                    <Route path="/ניהול מוצרים" element={<ItemPanel searchWord={searchFilter}/>}/>
-
-                    <Route path="/ניהול משתמשים" element={<AdminPanel searchWord={searchFilter}/>}/>
-
-                    <Route path="/קבלות" element={<ReceiptShowcase username={name} items={items}/>}/>
 
                 </Routes>
             </BrowserRouter>
