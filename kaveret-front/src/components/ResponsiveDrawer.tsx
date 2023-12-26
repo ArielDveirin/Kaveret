@@ -20,16 +20,17 @@ import Button from '@mui/material/Button';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 
 import PersonOutlineTwoToneIcon from '@mui/icons-material/PersonOutlineTwoTone';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import InputBase from '@mui/material/InputBase';
-import { Menu, MenuItem } from '@mui/material';
+import { Menu, MenuItem, TextField } from '@mui/material';
 import { useShoppingCart } from './ShoppingCartContext';
 
 import BannerImg from '../images/Banner.png';
 import YoterImg from '../images/yoter.png';
 
+import SearchIcon from '@mui/icons-material/Search';
 
 const drawerWidth = 240;
 
@@ -127,49 +128,29 @@ interface Item {
 
 interface ResponsiveDrawerProps {
   onSearchFilterChange: (newSearchFilter: string) => void; // Define the prop
-  name: string;
-  setName: (name: string) => void;
+  username: string;
+  setName: (username: string) => void;
 }
 
 export default function ResponsiveDrawer({
   onSearchFilterChange, // Receive the prop
-  name,
+  username,
   setName,
 }: ResponsiveDrawerProps)  {
   const navigate = useNavigate();
 
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
+  const [filter, setFilter] = useState('');
 
-  const {openCart} = useShoppingCart(name)
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newSearchFilter = event.target.value;
-    onSearchFilterChange(newSearchFilter);
-  };
+  const {openCart} = useShoppingCart(username)
+
+  
 
   const [items, setItems] = useState({});
 
-  useEffect(() => {
-    async function fetchItems() {
-      try {
-        const response = await fetch('http://localhost:3002/getItems', {
-          method: 'GET',
-          credentials: 'include',
-        });
 
-        if (response.ok) {
-          const responseBody = await response.text();
-         
-          setItems(responseBody);
-        }
-      } catch (error) {
-        console.error('Error fetching items:', error);
-      }
-    }
-
-    fetchItems();
-  }, []);
 
   const redirectPage = (prop: any) => {
     navigate('/' + prop);
@@ -195,12 +176,12 @@ export default function ResponsiveDrawer({
 
   const handleLogin = () => {
     setAnchorEl(null);
-    navigate('/כניסה');
+    navigate('/login');
   };
 
   const handleReceipts = () => {
     setAnchorEl(null);
-    navigate('/קבלות');
+    navigate('/receipts');
   }
 
   const handleLogout = async () => {
@@ -228,7 +209,7 @@ export default function ResponsiveDrawer({
 
   const handleRegister = () => {
     setAnchorEl(null);
-    navigate('/הרשמה');
+    navigate('/register');
 
   };
   const [isAdmin, setIsAdmin] = useState(false);
@@ -250,7 +231,16 @@ export default function ResponsiveDrawer({
         setErr('Error');
     }
   }
+ 
+  
 
+  function handleSearch() {
+    setAnchorEl(null);
+    navigate("Search/?filter="+filter);
+
+  };
+
+  
   checkAdmin();
   return (
     <Box sx={{ display: 'flex' }} >
@@ -262,19 +252,30 @@ export default function ResponsiveDrawer({
         <Toolbar dir="rtl" sx={{ backgroundColor: 'white' }}>
         
 
-        <Search>
-          <StyledInputBase
-              placeholder="חיפוש..."
-              inputProps={{ 'aria-label': 'search' }}
-              onChange={handleSearchChange}
-
-              />
+        <Search >
+        <div style={{width:"20rem", backgroundColor:"white"}} dir='rtl' >
+    `  <TextField
+        dir='rtl'
+        id="search-bar"
+        className="text"
+        onChange={(e) => setFilter(e.target.value)}
+        label="חיפוש..."
+        variant="outlined"
+        placeholder="חיפוש מוצרים..."
+        size="small"
+        
+      />
+      <IconButton type="submit" aria-label="search" onClick={handleSearch}>
+        <SearchIcon style={{ fill: "black" }} />
+      </IconButton>`
+  </div>
             
           
-
+           
         </Search>
-        
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, paddingRight:'75%', minHeight:"100%",width:"100%",}}>
+       
+
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, paddingRight:'65%', minHeight:"100%",width:"100%",}}>
 
           <div>
           <Button onClick={openCart}>
@@ -304,8 +305,8 @@ export default function ResponsiveDrawer({
                'aria-labelledby': 'basic-button',
              }}
            >
-            {name == "" && <><MenuItem onClick={handleLogin}>כניסה</MenuItem><MenuItem onClick={handleRegister}>הרשמה</MenuItem></>}
-            {name != "" && <><MenuItem onClick={handleReceipts}>חשבוניות</MenuItem><MenuItem onClick={handleLogout}>התנתקות</MenuItem></>}
+            {username == "" && <><MenuItem onClick={handleLogin}>Login</MenuItem><MenuItem onClick={handleRegister}>Register</MenuItem></>}
+            {username != "" && <><MenuItem onClick={handleReceipts}>Receipts</MenuItem><MenuItem onClick={handleLogout}>Logout</MenuItem></>}
 
              
            </Menu>
@@ -358,7 +359,7 @@ export default function ResponsiveDrawer({
         </DrawerHeader>
         <Divider />
         <List dir="rtl">
-          {['מבצעים', 'מוצרים'].map((text, index) => (
+          {['Sweets', 'Salty', 'Drinks', 'Vegetables', 'Dairy', 'Electronics','Miscellaneous'].map((text, index) => (
             <ListItem key={text} disablePadding>
               <ListItemButton onClick={() => redirectPage(text)}>
                 <ListItemIcon>
@@ -371,7 +372,7 @@ export default function ResponsiveDrawer({
         </List>
         {isAdmin &&
         <><Divider /><List dir="rtl">
-            {['ניהול מוצרים', 'ניהול משתמשים'].map((text, index) => (
+            {['Item management', 'User management'].map((text, index) => (
               <ListItem key={text} disablePadding>
                 <ListItemButton onClick={() => redirectPage(text)}>
                   <ListItemIcon>
@@ -382,7 +383,7 @@ export default function ResponsiveDrawer({
               </ListItem>
             ))}
           </List>  
-          <a href="https://www.yoter.co.il/" style={{marginTop:"178%"}}>
+          <a href="https://www.yoter.co.il/" style={{marginTop:"100%"}}>
                   <img src={YoterImg} style={{width:"100%"}}/>
           </a>
             </>

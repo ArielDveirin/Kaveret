@@ -25,9 +25,10 @@ interface Item {
   Quantity: string;
   ItemId: number;
   ImageUrl: string;
+  Category: string;
 }
 
-const Home = (props: {searchWord: string}) => {
+const Home = (props: { name: string}) => {
 
   const {getItemQuantity, addToCart, removeFromCart} = useShoppingCart("")
 
@@ -166,7 +167,7 @@ const Home = (props: {searchWord: string}) => {
         modules={[Pagination, Navigation]}
         className="mySwiper"
       >
-        {items.filter(item => item.Name.includes(props.searchWord)).map((item, index) => (
+        {items.map(item => (
 
         
       <SwiperSlide>
@@ -210,7 +211,7 @@ const Home = (props: {searchWord: string}) => {
 
 
       <Grid item xs={22} md={26} textAlign={"right"}>
-      <Typography fontSize={"1.5rem"} color={"#737373"}> מבצעים <ShoppingBagOutlinedIcon  sx={{outlineColor:"black", paddingTop:"3rem", outline:"10px", height:"100%"}}/> </Typography>
+      <Typography fontSize={"1.5rem"} color={"#737373"}> מתוקים <ShoppingBagOutlinedIcon  sx={{outlineColor:"black", paddingTop:"3rem", outline:"10px", height:"100%"}}/> </Typography>
 
       </Grid>
 
@@ -228,7 +229,7 @@ const Home = (props: {searchWord: string}) => {
         modules={[Pagination, Navigation]}
         className="mySwiper"
       >
-        {items.filter(item => (item.Name).includes(props.searchWord)).map((item, index) => (
+        {items.filter(item => (item.Category).includes("Sweets")).map((item, index) => (
         
       <SwiperSlide>
       <Box sx={{ boxShadow: 12}}>
@@ -267,7 +268,7 @@ const Home = (props: {searchWord: string}) => {
       ))}
       </Swiper>
       <Divider textAlign="left" style={{width:"100%", height:"0.01rem", backgroundColor:"#f2c30c", marginTop:"5rem"}} ></Divider>
-
+      
     </Grid>
   );
 };

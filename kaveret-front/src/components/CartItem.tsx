@@ -13,7 +13,7 @@ type CartItemProps = {
 
 interface Item {
     ID?: number;
-    name: string;
+    Name: string;
     Price: string;
     Quantity: string;
     ImageUrl: string;
@@ -46,7 +46,7 @@ export function CartItem({ id, quantity, items }: CartItemProps) {
       />
       <div className="me-auto">
         <div>
-          {item.name}{" "}
+          {item.Name}{" "}
           {quantity > 1 && (
             <span className="text-muted" style={{ fontSize: ".65rem" }}>
               x{quantity}

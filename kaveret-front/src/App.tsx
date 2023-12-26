@@ -11,10 +11,15 @@ import ItemPanel from './pages/ItemPanel'
 import ResponsiveDrawer from './components/ResponsiveDrawer';
 import { ShoppingCartProvider } from './components/ShoppingCartContext';
 import ReceiptShowcase from './pages/reciepts';
+import Sweets from './pages/Sweets';
+import Salty from './pages/Salty';
+import Drinks from './pages/Drinks';
+import Dairy from './pages/Dairy';
+import Search from './pages/Search';
 
 interface Item {
   ID?: number;
-  name: string;
+  Name: string;
   Price: string;
   Quantity: string;
   ImageUrl: string;
@@ -32,8 +37,8 @@ function App() {
           
             async () => {
 
-              if (!didValidate)
-             { 
+              if (name == "")
+              {
                 const response = await fetch('http://localhost:3002/validate', {
                     method: "GET",
                     credentials: 'include',
@@ -49,7 +54,6 @@ function App() {
                   .catch(error => {
                     console.error('Error fetching data:', error);
                   });
-                  setDidValidate(true);
 
 
                   
@@ -74,9 +78,9 @@ function App() {
                     }
                   
                   
-                  }
+                  
             }
-            
+          }
             
         )();
     });
@@ -92,23 +96,25 @@ function App() {
                 <ShoppingCartProvider items = {items} username={name}>
 
             <BrowserRouter>
-                <ResponsiveDrawer onSearchFilterChange={handleSearchFilterChange} name={name} setName={function (name: string): void {
+                <ResponsiveDrawer onSearchFilterChange={handleSearchFilterChange} username={name} setName={function (name: string): void {
                     throw new Error('Function not implemented.');
                 } }/>
                 
                 <Routes>
 
-                    <Route path="/"  element={<Home searchWord={searchFilter}/>} />
+                    <Route path="/"  element={<Home name={name}/>} />
                     
-                    <Route path="/כניסה" element={<Login/>}/>
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/item management" element={<ItemPanel searchWord={searchFilter} />} />
+                  <Route path="/user management" element={<AdminPanel searchWord={searchFilter} />} />
+                  <Route path="/receipts" element={<ReceiptShowcase username={name} items={items} />} />
+                  <Route path="/sweets" element={<Sweets/>} />
+                  <Route path="/salty" element={<Salty/>} />
+                  <Route path="/drinks" element={<Drinks/>} />
+                  <Route path="/dairy" element={<Dairy/>} />
+                  <Route path="/Search" element={<Search/>} />
 
-                    <Route path="/הרשמה" element={<Register />} />
-
-                    <Route path="/ניהול מוצרים" element={<ItemPanel searchWord={searchFilter}/>}/>
-
-                    <Route path="/ניהול משתמשים" element={<AdminPanel searchWord={searchFilter}/>}/>
-
-                    <Route path="/קבלות" element={<ReceiptShowcase username={name}/>}/>
 
                 </Routes>
             </BrowserRouter>

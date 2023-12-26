@@ -25,6 +25,7 @@ func AddItem(c *gin.Context) {
 
 	parseErr := json.Unmarshal(jsonData, &body)
 
+	//todo: add exception to wait for bad data - dont allow the user to crash the server!!
 	if parseErr != nil {
 
 		// if error is not nil
@@ -207,10 +208,14 @@ func BuyItems(c *gin.Context) {
 			//if there's enough in the stock, we substract the neeeded amount
 
 			//the item added to the reciept
-			recipt.ItemList = append(recipt.ItemList, body)
+			recipt.ItemIdList = append(recipt.ItemIdList, int64(body.ID))
+			quantityAsString := strconv.Itoa(s.Quantity)
+			recipt.QuantityList = append(recipt.QuantityList, quantityAsString)
 
-			if totalAsFloat, err := strconv.ParseFloat(body.Price, 32); err == nil {
-				recipt.Total = recipt.Total + float32(totalAsFloat)
+			for i := 1; i <= s.Quantity; i++ {
+				if totalAsFloat, err := strconv.ParseFloat(body.Price, 32); err == nil {
+					recipt.Total = recipt.Total + float32(totalAsFloat)
+				}
 			}
 
 			recipt.Username = s.Username

@@ -99,9 +99,9 @@ func main() {
 	r.GET("/validate", middleware.RequireAuth, controllers.Validate)
 	r.GET("/isAdmin", checkAdmin)
 
-	r.POST("/addItem", checkAdmin, middleware.RequireAuth, postAddItem)
-	r.POST("/deleteItem", checkAdmin, middleware.RequireAuth, postDeleteItem)
-	r.POST("/EditItem", checkAdmin, middleware.RequireAuth, postEditItem)
+	r.POST("/addItem", checkAdmin, postAddItem)
+	r.POST("/deleteItem", checkAdmin, postDeleteItem)
+	r.POST("/EditItem", checkAdmin, postEditItem)
 
 	r.GET("/getItems", getItems)
 	r.GET("/getReceipts", getReceipts)
@@ -111,7 +111,7 @@ func main() {
 	r.POST("/deleteUser", checkAdmin, middleware.RequireAuth, controllers.DeleteUser)
 	r.POST("/EditUser", checkAdmin, middleware.RequireAuth, controllers.EditUser)
 
-	r.POST("/BuyItems", middleware.RequireAuth, buyItems)
+	r.POST("/BuyItems", buyItems)
 
 	r.Run() // listen and serve on 0.0.0.0:8080
 }

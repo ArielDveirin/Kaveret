@@ -5,7 +5,7 @@ import { ShoppingCart } from "./ShoppingCart";
 
 interface Item {
     ID?: number;
-    name: string;
+    Name: string;
     Price: string;
     Quantity: string;
     ImageUrl: string;

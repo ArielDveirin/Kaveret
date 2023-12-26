@@ -9,4 +9,5 @@ type Item struct {
 	Quantity string
 	ImageUrl string
 	IsOnSale string
+	Category string
 }

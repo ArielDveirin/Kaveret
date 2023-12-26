@@ -19,7 +19,7 @@ import (
 
 func Signup(c *gin.Context) {
 
-	jsonData, err := ioutil.ReadAll(c.Request.Body)
+	jsonData, err := io.ReadAll(c.Request.Body)
 	if err != nil {
 		log.Fatal(err)
 	}
