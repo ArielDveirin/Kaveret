@@ -383,7 +383,7 @@ export default function ResponsiveDrawer({
               </ListItem>
             ))}
           </List>  
-          <a href="https://www.yoter.co.il/" style={{marginTop:"190%"}}>
+          <a href="https://www.yoter.co.il/" style={{marginTop:"100%"}}>
                   <img src={YoterImg} style={{width:"100%"}}/>
           </a>
             </>
